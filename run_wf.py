@@ -48,14 +48,17 @@ def create_lib(lib_name=LIBRARY_NAME):
 
 def create_lib_folder(lib_id, folder_name):
   dprint("creating library folder {} in library id={}".format(lib_id, folder_name))
-  lib.create_folder(lib_id, folder_name, description="Sample {}".format(folder_name))
+  return lib.create_folder(lib_id, folder_name, description="Sample {}".format(folder_name))
   
 def get_lib_folders(lib_id):
   dprint("checking for library id={} folders...".format(lib_id))
   return lib.get_folders(lib_id)
 
 def upload_file_to_dir(lib_id, paths, folder_id):
+  if paths:
     return lib.upload_from_galaxy_filesystem(lib_id, paths, folder_id, link_data_only="link_to_files")
+  else:
+    return None
 
 # check for data library, create if not present
 _l = get_lib()
@@ -68,39 +71,63 @@ def process_sample(sample, lib_folders, lib_id):
   end_folder = list(sample.keys())[0].split('/')[-1]
   # is this folder present?
   _r = {}
+  _present_files = {}
   for _f in lib_folders:
     if _f["name"] == str("/" + end_folder):
-      #raise Exception("folder '{}' already exists in data library '{}'".format(_f["name"], lib_id))
-     _r = _f
-     break
+      dprint("folder '{}' already exists in data library '{}'".format(_f["name"], lib_id))
+      _r = _f
+      break
   # its not, create
   if not _r:
-    _r = create_lib_folder(lib_id, end_folder)
+    _r = create_lib_folder(lib_id, end_folder)[0]
   _folder_id = _r["id"]
+  _present_files_and_folders = lib.show_library(lib_id, contents=True)
+  _present_files = []
+  for _pf in _present_files_and_folders:
+    if _pf["type"] != "file":
+      continue
+    _n = _pf['name'].split('/')
+    if _n[1] == end_folder:
+      _present_files.append(_n[-1])
   # add data
   _samples = sample[list(sample.keys())[0]]
+  
+  def absence(_sample, extant=_present_files):
+      if _sample.split('/')[-1] in extant:
+        return False
+      return _sample
 
-  _nuclei = _samples["nuclei"]
+  _nuclei = absence(_samples["nuclei"])
   _images = _samples["images"]
   _image_string = ""
   for _i in _images:
-    image_string = image_string + "{}\n".format(_id)
-  _annot  = _samples["annoation"]
+    _sample = absence(_i)
+    if _sample:
+      _image_string = _image_string + "{}\n".format(_i)
+  _annot  = absence(_samples["annotation"])
+  print(_nuclei)
+  print(_annot)
+  print(_image_string)
+
   _result_info = []
   for _in in (_nuclei, _annot, _image_string):
-    _result_info.append(upload_file_to_dir(lib_id, _in, _folder_id))
-
+    if _in:
+      _r = upload_file_to_dir(lib_id, _in, _folder_id)
+      if _r:
+        _result_info.append(_r)
   return _result_info
 
 
-print(get_lib_folders(_l["id"]))
+print("lib folds:\n{}".format(get_lib_folders(_l["id"])))
 
 sample_info = []
 
 for _s in SAMPLES:
   dprint("uploading sample {}".format(_s))
   lib_folders = get_lib_folders(_l["id"])
-  sample_info.append(process_sample({_s:SAMPLES[_s]}, lib_folders, _l["id"]))
+  _r = process_sample({_s:SAMPLES[_s]}, lib_folders, _l["id"])
+  if _r:
+    sample_info.append(_r)
 
 dprint(sample_info)
 exit()
