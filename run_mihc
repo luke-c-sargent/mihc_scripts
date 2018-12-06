@@ -31,7 +31,8 @@ def is_mihc_folder(location, exclude_processed=True):
   _result = {
     "images" : [],
     "nuclei" : "",
-    "annotation" : ""
+    "annotation" : "",
+    "parent_workflow": ""
   }
   dbg_log("files in {}:\n\t{}".format(location, _files))
   # if we are excluding processed, do that
@@ -57,6 +58,21 @@ def is_mihc_folder(location, exclude_processed=True):
     return {}
   # remove nuclei file from images
   _result["images"].remove(_result["nuclei"])
+  # find parent workflow
+  _l = location if location[-1] != '/' else location[:-1]
+  parent_dir = '/'.join(_l.split('/')[:-1])
+  _files, _dirs = list_dir(parent_dir)
+  _wf = ""
+  for f in _files:
+    if f[-3:] == ".ga":
+      if not _wf:
+        _wf = f
+      else:
+        raise Exception("Multiple workflows found where one was expected:\n\t{} and {}... quitting.".format(_wf, f))
+  if _wf:
+    _result["parent_workflow"] = _wf
+  else:
+    raise Exception("No workflows found in parent directory {}... quitting".format(parent_dir))
   return _result
 
 def list_dir(location):
@@ -98,6 +114,7 @@ def print_result(_r):
   for folder in _r:
     _root = _r[folder]
     print(folder)
+    print(" - wflow : {}".format(_root["parent_workflow"]))
     print(" - nuclei: {}".format(_root["nuclei"]))
     print(" - annot : {}".format(_root["annotation"]))
     print(" - images:")
