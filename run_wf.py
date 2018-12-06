@@ -130,14 +130,14 @@ for _s in SAMPLES:
     sample_info.append(_r)
 
 dprint(sample_info)
-exit()
+
 
 # create history
 nonce = str(datetime.utcnow()).split('.')[0]
 workflow_loc = "/home/lab/mybin/test_wf.ga"
 wfname = workflow_loc.split('/')[-1]
-history_info = hist.create_history(name="{} {}".format(wfmame, nonce))
-
+history_info = hist.create_history(name="{} {}".format(wfname, nonce))
+exit()
 
 # add datasets
 hist.upload_dataset_from_library(history_id, lib_dataset_id)
