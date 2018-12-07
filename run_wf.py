@@ -66,7 +66,6 @@ if not _l:
   _l = create_lib()
 
 dprint("lib info:\n{}".format(_l))
-
 def process_sample(sample, lib_folders, lib_id):
   end_folder = list(sample.keys())[0].split('/')[-1]
   # is this folder present?
@@ -122,6 +121,13 @@ print("lib folds:\n{}".format(get_lib_folders(_l["id"])))
 
 sample_info = []
 
+# create history
+nonce = str(datetime.utcnow()).split('.')[0]
+workflow_loc = "/home/lab/mybin/test_wf.ga"
+wfname = workflow_loc.split('/')[-1]
+#history_info = hist.create_history(name="{} {}".format(wfname, nonce))
+
+
 for _s in SAMPLES:
   dprint("uploading sample {}".format(_s))
   lib_folders = get_lib_folders(_l["id"])
@@ -132,18 +138,23 @@ for _s in SAMPLES:
 dprint(sample_info)
 
 
-# create history
-nonce = str(datetime.utcnow()).split('.')[0]
-workflow_loc = "/home/lab/mybin/test_wf.ga"
-wfname = workflow_loc.split('/')[-1]
-history_info = hist.create_history(name="{} {}".format(wfname, nonce))
-exit()
 
 # add datasets
-hist.upload_dataset_from_library(history_id, lib_dataset_id)
+#       hist.upload_dataset_from_library(history_id, lib_dataset_id)
 
 # add dataset collection
 e_ids = []
+lib_contents = lib.show_library(_l["id"], contents=True)
+for _li in lib_contents:
+  print(_li)
+exit()
+for _obj in lib_contents:
+  if _obj["type"] == "file":
+    _e = {
+      "id": _obj['id'],
+      "name": _obj['name']"",
+      "src":"lda"
+    }
 
 description = {
   "collection_type": "list",
