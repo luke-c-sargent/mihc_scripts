@@ -11,7 +11,7 @@ class MIHCDataset(MIHCBase):
     for _k in kwargs:
       if _k not in MIHCDataset.KEY_WHITELIST or not self._validate(kwargs[_k]):
         bad_args.append(_k)
-        print("deleting {}".format(_k))
+        self.dbg("deleting {}".format(_k))
     for _ba in bad_args:
       del kwargs[_ba]
     kwargs['source_path'] = source
@@ -51,3 +51,7 @@ class MIHCDataset(MIHCBase):
 
   def get_data(self):
     return self.__dict__
+
+  def get_files_to_upload(self):
+    _ys = [ self.__dict__[_y] for _y in self.KEY_WHITELIST ]
+    return dict(zip(self.KEY_WHITELIST, _ys))
