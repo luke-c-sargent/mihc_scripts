@@ -6,9 +6,13 @@ class MIHCBase:
     pass
 
   @staticmethod
-  def err(msg):
-    logging.error(msg)
-    sys.exit(1)
+  def err(msg, raise_e = False):
+    if raise_e:
+      logging.error(msg + " -- raising exception")
+      raise Exception(msg)
+    else:
+      logging.error(msg)
+      sys.exit(1)
 
   @staticmethod
   def warn(msg):

@@ -1,6 +1,6 @@
 from os import listdir,getcwd
 from os.path import isfile, isdir
-from Base import MIHCBase
+from MIHCBase import MIHCBase
 
 class MIHCDataset(MIHCBase):
   

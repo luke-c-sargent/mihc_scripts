@@ -1,7 +1,7 @@
 import json
 from os import listdir,getcwd
 from os.path import isfile, isdir
-from Base import MIHCBase
+from MIHCBase import MIHCBase
 from MIHCDataset import MIHCDataset
 
 class Detector(MIHCBase):
