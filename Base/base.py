@@ -15,5 +15,6 @@ class MIHCBase:
   def info(msg):
     logging.info(msg)
 
+  @staticmethod
   def dbg(msg):
     logging.debug(msg)

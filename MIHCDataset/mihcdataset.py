@@ -1,17 +1,19 @@
 from os import listdir,getcwd
 from os.path import isfile, isdir
+from Base import MIHCBase
 
 class MIHCDataset(MIHCBase):
   
   KEY_WHITELIST = ["nuclei", "images", "annotation", "cppipe", "parent_workflow"]
   
-  def __init__(self, **kwargs):
+  def __init__(self, source, **kwargs):
     for _k in kwargs:
-      if _k not in KEY_WHITELIST or not validate(kwargs[_k]):
+      if _k not in MIHCDataset.KEY_WHITELIST or not self.validate(kwargs[_k]):
         del kwargs[_k]
+    kwargs['source_path'] = source
     self.__dict__.update(kwargs)
 
-  def _validate(src):
+  def _validate(self, src):
     if isinstance(src, list):
       bad_files = []
       for _s in src:
@@ -26,3 +28,6 @@ class MIHCDataset(MIHCBase):
       if not isfile(src):
         err("Error: provided file '{}' does not exist".format(src))
       return True  
+
+  def get_data(self):
+    return self.__dict__
