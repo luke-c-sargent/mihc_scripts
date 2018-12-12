@@ -66,7 +66,7 @@ class Detector(MIHCBase):
       return {}
     for _k in _result:
       if not _result[_k]:
-        self.dbg("Missing required input: {}".format(_k))
+        self.warn("Missing required input: {}".format(_k))
         return {}
     return _result
 
@@ -102,7 +102,7 @@ class Detector(MIHCBase):
         self.dbg("its mihc: {}".format(_mihc))
         results.append((_loc, _mihc))
       else:
-        self.dbg("its not mihc")
+        self.dbg("{} is not mihc".format(_loc))
         possible_locations.extend(self._list_dir(_loc)[1])
         self.dbg(possible_locations)
     return results
