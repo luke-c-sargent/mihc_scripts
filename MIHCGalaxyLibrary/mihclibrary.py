@@ -34,8 +34,12 @@ class MIHCGalaxyLibrary(MIHCBase):
         _s += "  - '{}'\n".format(_k)
     return _s + "</MIHCGalaxyLibrary>"
 
+
+  # content keys: url, id, name, type
   def _update_contents(self):
     self.library_contents = self._lib.show_library(self.id, contents=True)
+    for _lc in self.library_contents:
+      print(_lc)
 
   def _get_lib(self):
     self.dbg("checking for library {}".format(self._lib))
@@ -53,6 +57,7 @@ class MIHCGalaxyLibrary(MIHCBase):
     return self._get_lib(_n)
 
   def _create_lib_folder(self, folder_name):
+    # ensure it doesn't already exist
     for _f in self.library_contents:
       if _f['type'] == 'folder':
         if _f['name'].split('/')[-1] == folder_name:
@@ -64,23 +69,42 @@ class MIHCGalaxyLibrary(MIHCBase):
     return _r
   
   def _upload_file_to_dir(self, paths, folder_id):
+    _r = None
     if paths:
-      self._lib.upload_from_galaxy_filesystem(lib_id, paths, folder_id, link_data_only="link_to_files")
+      _r = self._lib.upload_from_galaxy_filesystem(self.id, paths, folder_id, link_data_only="link_to_files")
       self._update_contents()
-    else:
-      return None
+    return _r
 
   def add_mihc_datasets(self, datasets):
     # in case its just one dataset
+    _r = []
     if not isinstance(datasets, list):
       datasets = [datasets]
     for _d in datasets:
-      self._add_mihc_dataset(_d)
-      
+      _rd = self._add_mihc_dataset(_d)
+      if _rd:
+        _r.append(_rd)
+    return _r
+
   def _add_mihc_dataset(self, dataset):
-    _files = dataset.get_files_to_upload()
-    for _f in _files:
-      pass
+    _files = dataset._get_files_to_upload()
+    end_folder = dataset.source_path.split('/')[-1]
+    # create library folder
+    _folder_info = self._create_lib_folder(end_folder)
+    # 'paths' string creation helper fn
+
+    def _unify_paths(*args):
+      final_string = ""
+      for _a in args:
+        if isinstance(_a, list):
+          for _elem in _a:
+            final_string += "{}\n".format(_elem)
+        else:
+          final_string += "{}\n".format(_a)
+      return final_string[:-1]
+    
+    # add files to created directory
+    return self._upload_file_to_dir( _unify_paths(_files), _folder_info['id'] )
     
     
 

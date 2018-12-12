@@ -6,7 +6,9 @@ class MIHCDataset(MIHCBase):
   
   KEY_WHITELIST = ["nuclei", "images", "annotation", "cppipe", "parent_workflow"]
   
-  def __init__(self, source, **kwargs):
+  def __init__(self, source, library, **kwargs):
+    self.in_library = False
+    self.library = library
     bad_args = []
     for _k in kwargs:
       if _k not in MIHCDataset.KEY_WHITELIST or not self._validate(kwargs[_k]):
@@ -16,6 +18,7 @@ class MIHCDataset(MIHCBase):
       del kwargs[_ba]
     kwargs['source_path'] = source
     self.__dict__.update(kwargs)
+    self._library_sync()
 
   def __repr__(self):
     _r = "<MIHCDataset>\n"
@@ -29,6 +32,18 @@ class MIHCDataset(MIHCBase):
     _r +="</MIHCDataset>"
     return _r
       
+
+  def _library_sync(self):
+    self.dbg("adding dataset to library {}:\n{}".format(self.library.name, self))
+    if self.library and not self.in_library:
+      _r = self.library._add_mihc_dataset(self)
+    print(_r)
+    if _r:
+      self.in_library = True
+      return _r
+    else:
+      self.err("failure to upload dataset to library {}:\n{}".format(self.library.name, self))
+      return None
 
   def _validate(self, src):
     if isinstance(src, list):
@@ -52,6 +67,38 @@ class MIHCDataset(MIHCBase):
   def get_data(self):
     return self.__dict__
 
-  def get_files_to_upload(self):
-    _ys = [ self.__dict__[_y] for _y in self.KEY_WHITELIST ]
-    return dict(zip(self.KEY_WHITELIST, _ys))
+  def _get_files_to_upload(self):
+    # was it already added?
+    if self.in_library:
+      return {}
+    end_folder = self.source_path.split('/')[-1]
+    # create a list of files in dataset
+    _r = []
+    for _key in self.KEY_WHITELIST:
+      _value = self.__dict__[_key]
+      if isinstance( _value, list):
+        _r.extend(_value)
+      else:
+        _r.append(_value)
+    # remove duplicates
+    _r = list(set(_r))
+    _r.sort()
+    _fs = self.library.library_contents
+
+    # for every object already in the library....
+    for _f in _fs:
+      if _f['type'] != 'file': # ignore non-files
+        continue
+      print("/{}/".format(end_folder))
+      if "/{}/".format(end_folder) in _f['name']: # check to see if its in the folder
+        _filename = _f['name'].split('/')[-1]
+        # for every potential input:
+        extant_files = []
+        for _ds in _r:
+          print("is {} in {}?".format(_filename, _ds))
+          if _filename in _ds:
+            extant_files.append(_ds)
+        for _ef in extant_files:
+          _r.remove(_ef)
+    return _r
+            
