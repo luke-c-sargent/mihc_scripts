@@ -76,7 +76,7 @@ class Detector(MIHCBase):
     _dirs  = []
     _contents = listdir(location)
     for c in _contents:
-      c = location + str("" if location[-1] == "/" else location + "/") + c
+      c = location + str("" if location[-1] == "/" else "/") + c
       if isfile(c):
         _files.append(c)
       elif isdir(c):
