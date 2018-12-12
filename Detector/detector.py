@@ -98,7 +98,7 @@ class Detector(MIHCBase):
       _mihc = self._is_mihc_folder(_loc)
       if _mihc:
         self.dbg("mihc: {}".format(_mihc))
-        results.append(MIHCDataset(_loc, _mihc))
+        results.append((_loc, _mihc))
       else:
         possible_locations.extend(self._list_dir(_loc)[1])
         self.dbg(possible_locations)
