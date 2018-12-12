@@ -1,4 +1,4 @@
-from MIHCBase import MIHCBase
+from ..MIHCBase import MIHCBase
 from bioblend.galaxy import libraries
 
 
@@ -13,9 +13,9 @@ class MIHCGalaxyLibrary(MIHCBase):
   
   def __init__(self, galaxy_instance, lib_name=None, lib_description=None):
     if not lib_name:
-      self.name = self.DEFAULT_LIBRARY_NAME
+      self.name = MIHCGalaxyLibrary.DEFAULT_LIBRARY_NAME
     if not lib_description:
-      self.description = self.DEFAULT_LIBRARY_DESCRIPTION
+      self.description = MIHCGalaxyLibrary.DEFAULT_LIBRARY_DESCRIPTION
     self._lib = libraries.LibraryClient(galaxy_instance)
     # get lib info, create if needed, error if multiples
     _lib = self._get_lib()
