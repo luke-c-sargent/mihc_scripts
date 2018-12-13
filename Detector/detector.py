@@ -89,7 +89,7 @@ class Detector(MIHCBase):
   def _find_mihc_data(self, location):
     self.dbg("looking in {}....".format(location))
     possible_locations = [location]
-    results = []
+    results = {}
     while possible_locations:
       self.dbg("possibles:\n{}".format(possible_locations))
       # pop the top entry
@@ -100,11 +100,10 @@ class Detector(MIHCBase):
       _mihc = self._is_mihc_folder(_loc)
       if _mihc:
         self.dbg("its mihc: {}".format(_mihc))
-        results.append((_loc, _mihc))
+        results[_loc]= _mihc
       else:
         self.dbg("{} is not mihc".format(_loc))
         possible_locations.extend(self._list_dir(_loc)[1])
-        self.dbg(possible_locations)
     return results
 
   def get_data(self):
