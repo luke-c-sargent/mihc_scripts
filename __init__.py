@@ -1,11 +1,12 @@
 from .MIHCBase import MIHCBase
 from .MIHCGalaxy import MIHCGalaxy
-from .MIHCDataset import MIHCDataset
+from .MIHCDataset import MIHCDataset, BaseMIHCData
 from .MIHCGalaxyLibrary import MIHCGalaxyLibrary
 from .Detector import Detector
 
-class MIHC_Runner(MIHCBase):
+class MIHCRunner(MIHCBase):
   def __init__(self, location=None, api_key=None, galaxy_address=None, galaxy_port=None):
+    # checking input
     if not api_key:
       self.err("API key is required")
     if not galaxy_address:
@@ -14,6 +15,7 @@ class MIHC_Runner(MIHCBase):
     if not galaxy_port:
       galaxy_port = "8088"
       self.warn("No Galaxy port provided -- using {}".format(galaxy_port))
+
     # sense the samples
     self.detector = Detector(location=location)
     # provision galaxy instance with discovered samples

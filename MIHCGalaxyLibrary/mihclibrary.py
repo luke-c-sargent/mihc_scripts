@@ -1,4 +1,4 @@
-from ..MIHCBase import MIHCBase
+from MIHCBase import MIHCBase
 from bioblend.galaxy import libraries
 
 

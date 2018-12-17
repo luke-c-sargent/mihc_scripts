@@ -1,43 +1,31 @@
-from os import listdir,getcwd
-from os.path import isfile, isdir
-from ..MIHCBase import MIHCBase
+from MIHCDataset import BaseMIHCData
 
-class MIHCDataset(MIHCBase):
-  
-  KEY_WHITELIST = ["nuclei", "images", "annotation", "cppipe", "parent_workflow"]
-  
-  def __init__(self, source, library, **kwargs):
+class MIHCDataset(BaseMIHCData):
+
+  def __init__(self, source, library):
     self.in_library = False
     self.library = library
-    bad_args = []
-    for _k in kwargs:
-      if _k not in MIHCDataset.KEY_WHITELIST or not self._validate(kwargs[_k]):
-        bad_args.append(_k)
-        self.dbg("deleting {}".format(_k))
-    for _ba in bad_args:
-      del kwargs[_ba]
-    kwargs['source_path'] = source
-    self.__dict__.update(kwargs)
+
+    # set data
+    self._data = self.check_data(source)
     self._library_sync()
 
   def __repr__(self):
     _r = "<MIHCDataset>\n"
-    for _k in self.__dict__.keys():
+    for _k in self._data.keys():
       _r += "  {}:\n".format(_k)
-      if isinstance(self.__dict__[_k], list):
-        for _i in self.__dict__[_k]:
+      if isinstance(self._data[_k], list):
+        for _i in self._data[_k]:
           _r += "\t{}\n".format(_i)
       else:
-        _r += "\t{}\n".format(self.__dict__[_k])
+        _r += "\t{}\n".format(self._data[_k])
     _r +="</MIHCDataset>"
     return _r
-      
 
   def _library_sync(self):
     self.dbg("adding dataset to library {}:\n{}".format(self.library.name, self))
     if self.library and not self.in_library:
       _r = self.library._add_mihc_dataset(self)
-    print(_r)
     if _r:
       self.in_library = True
       return _r
@@ -45,27 +33,27 @@ class MIHCDataset(MIHCBase):
       self.err("failure to upload dataset to library {}:\n{}".format(self.library.name, self))
       return None
 
-  def _validate(self, src):
-    if isinstance(src, list):
-      bad_files = []
-      for _s in src:
-        if not isfile(_s):
-          bad_files.append(_s)
-      if bad_files:
-        error_string = "Error: the following provided files do not exist:\n"
-        for _bf in bad_files:
-          error_string += "  - {}\n".format(_bf)
-        self.err(error_string)
-        return False
-      return True
-    else:
-      if not isfile(src):
-        self.err("Error: provided file '{}' does not exist".format(src))
-        return False
-      return True  
+  # def _validate(self, src):
+  #   if isinstance(src, list):
+  #     bad_files = []
+  #     for _s in src:
+  #       if not isfile(_s):
+  #         bad_files.append(_s)
+  #     if bad_files:
+  #       error_string = "Error: the following provided files do not exist:\n"
+  #       for _bf in bad_files:
+  #         error_string += "  - {}\n".format(_bf)
+  #       self.err(error_string)
+  #       return False
+  #     return True
+  #   else:
+  #     if not isfile(src):
+  #       self.err("Error: provided file '{}' does not exist".format(src))
+  #       return False
+  #     return True
 
-  def get_data(self):
-    return self.__dict__
+  # def get_data(self):
+  #   return self.__dict__
 
   def _get_files_to_upload(self):
     # was it already added?
