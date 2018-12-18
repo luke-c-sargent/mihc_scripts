@@ -91,8 +91,6 @@ class MIHCGalaxyLibrary(MIHCBase):
     return _r
 
   def _add_mihc_dataset(self, dataset):
-    print(dataset)
-    exit()
     _k = list(dataset.keys())[0]
     _v = dataset[_k]
     _files = _v._get_files_to_upload()
