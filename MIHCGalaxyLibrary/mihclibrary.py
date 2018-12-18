@@ -42,8 +42,8 @@ class MIHCGalaxyLibrary(MIHCBase):
   # content keys: url, id, name, type
   def _update_contents(self):
     self.library_contents = self._lib.show_library(self.id, contents=True)
-    for _lc in self.library_contents:
-      print(_lc)
+    #for _lc in self.library_contents:
+     # print(_lc)
 
   def _get_lib(self):
     self.dbg("checking for library {}".format(self._lib))
