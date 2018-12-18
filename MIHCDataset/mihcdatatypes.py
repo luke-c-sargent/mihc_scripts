@@ -57,15 +57,19 @@ class BaseMIHCData(MIHCBase):
     _fs = library.library_contents
     # for every object already in the library....
     for _f in _fs:
+      print("file {}".format(_f))
       if _f['type'] != 'file': # ignore non-files
+        print("...not a file")
         continue
       if "/{}/".format(end_folder) in _f['name']: # check to see if its in the folder
+        print("/{}/ in {}".format(end_folder, _f['name']))
         _filename = _f['name'].split('/')[-1]
         # for every potential input:
         extant_files = []
         for _ds in _r:
           if _filename in _ds:
             extant_files.append(_ds)
+        print("extant_files: {}".format(extant_files))
         for _ef in extant_files:
           _r.remove(_ef)
     return _r
