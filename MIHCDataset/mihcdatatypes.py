@@ -67,7 +67,10 @@ class BaseMIHCData(MIHCBase):
         extant_files = []
         for _ds in _r:
           if _filename in _ds:
+            print("{} in {}!!!!".format(_filename, _ds))
             extant_files.append(_ds)
+          else:
+            print("{} NOT in {}!!!!".format(_filename, _ds))
         print("extant_files: {}".format(extant_files))
         for _ef in extant_files:
           _r.remove(_ef)
