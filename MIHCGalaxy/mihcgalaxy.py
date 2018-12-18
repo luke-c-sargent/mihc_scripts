@@ -19,6 +19,8 @@ class MIHCGalaxy(MIHCBase):
     
     _rs = []
     for _k in samples:
+      print(samples[_l])
+      exit()
       _r = samples[_k].library_sync(self._lib)
       if _r:
         _rs.append(_r)

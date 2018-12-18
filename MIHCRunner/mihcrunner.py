@@ -19,8 +19,6 @@ class MIHCRunner(MIHCBase):
     # provision galaxy instance with discovered samples
     _samps = self.detector.get_data()
     print(_samps)
-    exit()
     self.galaxy = MIHCGalaxy(galaxy_address="{}:{}".format(galaxy_address, galaxy_port), api_key=api_key, samples=_samps)
     # ACTUALLY I SHOULD PROBABLY SEND THIS TO MIHCGalaxy
     # ***************************^^^^^^^^^^^^^^^^^^^^^^**********************
-    
