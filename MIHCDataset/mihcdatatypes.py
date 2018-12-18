@@ -48,7 +48,7 @@ class BaseMIHCData(MIHCBase):
     for _key in self.CONTENTS:
       _value = self._data[_key]
       print("{} instance of {}?".format(_value, self.CONTENTS[_key]))
-      if isinstance( _value, self.CONTENTS[_key]):
+      if isinstance( _value, list):
         _r.extend(_value)
       else:
         _r.append(_value)
