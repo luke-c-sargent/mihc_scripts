@@ -42,7 +42,7 @@ class BaseMIHCData(MIHCBase):
     # was it already added?
     if self.in_library:
       return {}
-    end_folder = self._data["source_path"].split('/')[-1]
+    end_folder = self._data["source_dir"].split('/')[-1]
     # create a list of files in dataset
     _r = []
     for _key in self.KEY_WHITELIST:
