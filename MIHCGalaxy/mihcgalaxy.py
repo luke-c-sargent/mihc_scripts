@@ -5,9 +5,9 @@ from datetime import datetime
 
 from bioblend.galaxy import GalaxyInstance, libraries, histories
 
-import MIHCBase
-import MIHCGalaxyLibrary
-import MIHCHistory
+from MIHCBase import MIHCBase
+from MIHCGalaxyLibrary import MIHCGalaxyLibrary
+from MIHCHistory import MIHCHistory
 
 class MIHCGalaxy(MIHCBase):
   
