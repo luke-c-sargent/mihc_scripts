@@ -14,8 +14,12 @@ class MIHCGalaxyLibrary(MIHCBase):
   def __init__(self, galaxy_instance, lib_name=None, lib_description=None):
     if not lib_name:
       self.name = MIHCGalaxyLibrary.DEFAULT_LIBRARY_NAME
+    else:
+      self.name = lib_name
     if not lib_description:
       self.description = MIHCGalaxyLibrary.DEFAULT_LIBRARY_DESCRIPTION
+    else:
+      self.description = lib_description
     self._lib = libraries.LibraryClient(galaxy_instance)
     # get lib info, create if needed, error if multiples
     _lib = self._get_lib()
@@ -43,7 +47,7 @@ class MIHCGalaxyLibrary(MIHCBase):
 
   def _get_lib(self):
     self.dbg("checking for library {}".format(self._lib))
-    _r = self._lib.get_libraries(name=self.__dict__["name"])
+    _r = self._lib.get_libraries(name=self.name)
     if len(_r) > 1:
       self.err("there should be exactly one repo named {}.... {} found.".format(LIBRARY_NAME, len(_r)))
     elif len(_r) == 0:
