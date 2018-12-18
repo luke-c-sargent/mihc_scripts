@@ -92,7 +92,7 @@ class MIHCGalaxyLibrary(MIHCBase):
 
   def _add_mihc_dataset(self, dataset):
     _files = dataset._get_files_to_upload(self)
-    end_folder = dataset.source_path.split('/')[-1]
+    end_folder = dataset._data["source_dir"].split('/')[-1]
     # create library folder
     _folder_info = self._create_lib_folder(end_folder)
     # 'paths' string creation helper fn
