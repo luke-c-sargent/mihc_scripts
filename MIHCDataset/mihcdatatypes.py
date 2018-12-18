@@ -30,7 +30,7 @@ class BaseMIHCData(MIHCBase):
   def library_sync(self, library):
     self.dbg("adding dataset to library {}:\n{}".format(library.name, self))
     if library and not self.in_library:
-      _r = library._add_mihc_dataset(self._data)
+      _r = library._add_mihc_dataset(self)
     if _r:
       self.in_library = True
       return _r
