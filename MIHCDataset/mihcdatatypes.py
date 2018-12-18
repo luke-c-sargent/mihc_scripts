@@ -45,9 +45,9 @@ class BaseMIHCData(MIHCBase):
     end_folder = self._data["source_dir"].split('/')[-1]
     # create a list of files in dataset
     _r = []
-    for _key in self.KEY_WHITELIST:
-      _value = self.__dict__[_key]
-      if isinstance( _value, list):
+    for _key in self.CONTENTS:
+      _value = self._data[_key]
+      if isinstance( _value, self.CONTENTS[_key]):
         _r.extend(_value)
       else:
         _r.append(_value)
