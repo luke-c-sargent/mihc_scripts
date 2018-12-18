@@ -10,7 +10,7 @@ class MIHCHistory(MIHCBase):
   
   
   
-  def __init__(self, name=None, galaxy_instance=gi, id=None, check_by="id", timestamp_new=True):
+  def __init__(self, name=None, galaxy_instance=None, id=None, check_by="id", timestamp_new=True):
     self._hist = histories.HistoryClient()
     if id:
       # check if its already created
