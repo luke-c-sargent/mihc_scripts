@@ -70,7 +70,7 @@ class MIHCFullRun(BaseMIHCData):
       "annotation" : "",
       "parent_workflow": "",
       "cppipe": "",
-      "source_dir": ""
+      "source_dir": location
     }
     # data is: files
     # HAS: <name>.xml, <name>.svs, other svs's, cppipe file
