@@ -1,5 +1,6 @@
 from MIHCBase import MIHCBase
 from Detector import Detector
+from MIHCGalaxy import MIHCGalaxy
 
 class MIHCRunner(MIHCBase):
   def __init__(self, location=None, api_key=None, galaxy_address=None, galaxy_port=None):
