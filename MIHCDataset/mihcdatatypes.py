@@ -47,7 +47,6 @@ class BaseMIHCData(MIHCBase):
     _r = []
     for _key in self.CONTENTS:
       _value = self._data[_key]
-      print("{} instance of {}?".format(_value, self.CONTENTS[_key]))
       if isinstance( _value, list):
         _r.extend(_value)
       else:
@@ -56,20 +55,15 @@ class BaseMIHCData(MIHCBase):
     _r = list(set(_r))
     _r.sort()
     _fs = library.library_contents
-
-    print("R:{}\nF:{}\n".format(_r, _fs))
-    exit()
     # for every object already in the library....
     for _f in _fs:
       if _f['type'] != 'file': # ignore non-files
         continue
-      print("/{}/".format(end_folder))
       if "/{}/".format(end_folder) in _f['name']: # check to see if its in the folder
         _filename = _f['name'].split('/')[-1]
         # for every potential input:
         extant_files = []
         for _ds in _r:
-          print("is {} in {}?".format(_filename, _ds))
           if _filename in _ds:
             extant_files.append(_ds)
         for _ef in extant_files:
