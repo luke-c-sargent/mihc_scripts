@@ -22,29 +22,31 @@ class BaseMIHCData(MIHCBase):
   def get_data(self):
     return self._data
   
+  # ensure these files actually exist
   def validate(self):
     _d = self.get_data()
     for _k in _d:
       if not isinstance(_d[_k], self.CONTENTS[_k]):
         self.warn("data entry for {} is not of type {}".format(_k, self.CONTENTS[_k]))
         return False
-    if isinstance(src, list):
-      bad_files = []
-      for _s in src:
-        if not isfile(_s):
-          bad_files.append(_s)
-      if bad_files:
-        error_string = "Error: the following provided files do not exist:\n"
-        for _bf in bad_files:
-          error_string += "  - {}\n".format(_bf)
-        self.err(error_string)
-        return False
-      return True
-    else:
-      if not isfile(src):
-        self.err("Error: provided file '{}' does not exist".format(src))
-        return False
-      return True
+      src = _d[_k]
+      if isinstance(src, list):
+        bad_files = []
+        for _s in src:
+          if not isfile(_s):
+            bad_files.append(_s)
+        if bad_files:
+          error_string = "Error: the following provided files do not exist:\n"
+          for _bf in bad_files:
+            error_string += "  - {}\n".format(_bf)
+          self.err(error_string)
+          return False
+        return True
+      else:
+        if not isfile(src):
+          self.err("Error: provided file '{}' does not exist".format(src))
+          return False
+        return True
 
 class MIHCFullRun(BaseMIHCData):
   
