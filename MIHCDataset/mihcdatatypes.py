@@ -56,6 +56,8 @@ class BaseMIHCData(MIHCBase):
     _r.sort()
     _fs = library.library_contents
 
+    print("R:{}\nF:{}\n".format(_r, _fs))
+    exit()
     # for every object already in the library....
     for _f in _fs:
       if _f['type'] != 'file': # ignore non-files
