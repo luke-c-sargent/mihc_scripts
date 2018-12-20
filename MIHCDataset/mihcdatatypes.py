@@ -46,6 +46,8 @@ class BaseMIHCData(MIHCBase):
     # create a list of files in dataset
     _r = []
     for _key in self.CONTENTS:
+      if _key == "source_dir":
+        continue
       _value = self._data[_key]
       if isinstance( _value, list):
         _r.extend(_value)
@@ -85,7 +87,6 @@ class BaseMIHCData(MIHCBase):
     print("final R:")
     for _rr in _r:
       print(_rr)
-    exit()
     return _r
 
   @staticmethod
