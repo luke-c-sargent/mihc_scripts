@@ -37,6 +37,12 @@ class BaseMIHCData(MIHCBase):
     else:
       self.warn("Dataset upload to library {} not performed as all files present".format(library.name, self))
       return None
+      
+  def get_files(self):
+    _r = dict(self._data)
+    del _r["source_dir"]
+    del _r["parent_workflow"]
+    return _r
 
   def _get_files_to_upload(self, library):
     # was it already added?

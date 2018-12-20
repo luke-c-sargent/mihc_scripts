@@ -114,3 +114,16 @@ class MIHCGalaxyLibrary(MIHCBase):
     _r = self._upload_file_to_dir( _unify_paths(_files), _folder_info['id'] )
     dataset.in_library = True
     return _r
+    
+    def get_file_id(self, filename, containing_folder):
+      _rs = []
+      for _f in self.library_contents:
+        if _f["type"] == "file" and _f["name"] == "/{}/{}".format(containing_folder, filename):
+          _rs.append(_f["id"])
+        elif not _rs:
+          self.warn("/{}/{} file not found in library".format(containing_folder, filename))  
+        elif len(_rs) != 1:
+          self.err("files found matching name > 1")
+      return _rs[0]
+
+    
