@@ -4,7 +4,7 @@ from os.path import isfile, isdir
 
 class BaseMIHCData(MIHCBase):
   
-  CONTENTS = {}
+  CONTENTS = {} # MUST HAVE source_dir AND parent_workflow PATHS AS ENTRIES
   
   def __init__(self, location=None, data=None):
     self.in_library = False
@@ -46,7 +46,7 @@ class BaseMIHCData(MIHCBase):
     # create a list of files in dataset
     _r = []
     for _key in self.CONTENTS:
-      if _key == "source_dir":
+      if _key in ["source_dir", "parent_workflow"]:
         continue
       _value = self._data[_key]
       if isinstance( _value, list):
