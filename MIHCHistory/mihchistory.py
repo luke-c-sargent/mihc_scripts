@@ -33,7 +33,7 @@ class MIHCHistory(MIHCBase):
       # add dataset if its a simple string
       # add dataset collection if it's a list
     pass
-    raise Exception("IMPLEMENT ME PLEASE")
+    #raise Exception("IMPLEMENT ME PLEASE")
 
   def _add_dataset(self, data):
     return self._hist.upload_dataset_from_library(self._data["id"], lib_dataset_id)
