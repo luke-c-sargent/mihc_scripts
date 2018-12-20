@@ -55,6 +55,13 @@ class BaseMIHCData(MIHCBase):
     _r = list(set(_r))
     _r.sort()
     _fs = library.library_contents
+    print("we are comparing:")
+    for _rr in _r:
+      print(_rr)
+    print("--vs:")
+    for _ffs in _fs:
+      print(_ffs)
+    exit()
     # for every object already in the library....
     for _f in _fs:
       if _f['type'] != 'file': # ignore non-files
