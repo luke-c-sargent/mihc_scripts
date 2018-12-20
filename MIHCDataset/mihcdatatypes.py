@@ -82,7 +82,9 @@ class BaseMIHCData(MIHCBase):
         for _ef in extant_files:
           print(" - {}".format(_ef))
           _r.remove(_ef)
-    print("final R:\n{}".format(_r))
+    print("final R:")
+    for _rr in _r:
+      print(_rr)
     exit()
     return _r
 
