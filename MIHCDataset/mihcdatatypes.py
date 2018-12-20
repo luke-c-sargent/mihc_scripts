@@ -35,7 +35,7 @@ class BaseMIHCData(MIHCBase):
       self.in_library = True
       return _r
     else:
-      self.err("failure to upload dataset to library {}:\n{}".format(library.name, self))
+      self.warn("Dataset upload to library {} not performed as all files present".format(library.name, self))
       return None
 
   def _get_files_to_upload(self, library):

@@ -92,6 +92,9 @@ class MIHCGalaxyLibrary(MIHCBase):
 
   def _add_mihc_dataset(self, dataset):
     _files = dataset._get_files_to_upload(self)
+    if not _files:
+      self.warn("Files already present in Data Library")
+      return []
     end_folder = dataset._data["source_dir"].split('/')[-1]
     # create library folder
     _folder_info = self._create_lib_folder(end_folder)
@@ -108,4 +111,6 @@ class MIHCGalaxyLibrary(MIHCBase):
       return final_string[:-1]
     
     # add files to created directory
-    return self._upload_file_to_dir( _unify_paths(_files), _folder_info['id'] )
+    _r = self._upload_file_to_dir( _unify_paths(_files), _folder_info['id'] )
+    dataset.in_library = True
+    return _r
