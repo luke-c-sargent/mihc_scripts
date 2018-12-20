@@ -68,7 +68,6 @@ class BaseMIHCData(MIHCBase):
         for _ds in _r:
           if _filename in _ds:
             extant_files.append(_ds)
-          else:
         for _ef in extant_files:
           _r.remove(_ef)
     return _r
