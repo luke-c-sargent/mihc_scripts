@@ -23,7 +23,7 @@ class MIHCHistory(MIHCBase):
         nonce=str(datetime.utcnow()).split('.')[0]
         name += " @ {}".format(nonce)
       _info = self._hist.create_history(name=name)
-      self.dbg("Created history:\n{}"0.format(_info))
+      self.dbg("Created history:\n{}".format(_info))
       self._data = _info
     else:
       self.err("Need either a name to create a new history or an id to find existent")
