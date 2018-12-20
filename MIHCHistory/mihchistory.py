@@ -40,7 +40,7 @@ class MIHCHistory(MIHCBase):
       if isinstance(_val, str):
         self._add_dataset(_val, library)
       # add dataset collection if it's a list
-    elif isinstance(_val, list):
+      elif isinstance(_val, list):
         pass
       else:
         self.err("Dataset has weird file {} whose type {} is strange".format(_e, type(_val)))
