@@ -22,4 +22,4 @@ class MIHCGalaxy(MIHCBase):
       _r = samples[_k].library_sync(self._lib)
       if _r:
         _rs.append(_r)
-    return _rs
+    self._results = _rs
