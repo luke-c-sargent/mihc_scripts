@@ -57,36 +57,20 @@ class BaseMIHCData(MIHCBase):
     _r = list(set(_r))
     _r.sort()
     _fs = library.library_contents
-    print("we are comparing:")
-    for _rr in _r:
-      print(_rr)
-    print("--vs:")
-    for _ffs in _fs:
-      print(_ffs)
-
     # for every object already in the library....
     for _f in _fs:
       if _f['type'] != 'file': # ignore non-files
         continue
       if "/{}/".format(end_folder) in _f['name']: # check to see if its in the folder
-        print("/{}/ in {}".format(end_folder, _f['name']))
         _filename = _f['name'].split('/')[-1]
-        print("FN: {}".format(_filename))
         # for every potential input:
         extant_files = []
         for _ds in _r:
           if _filename in _ds:
-            print("{} in {}!!!!".format(_filename, _ds))
             extant_files.append(_ds)
           else:
-            print("{} NOT in {}!!!!".format(_filename, _ds))
-        print("removing files:")
         for _ef in extant_files:
-          print(" - {}".format(_ef))
           _r.remove(_ef)
-    print("final R:")
-    for _rr in _r:
-      print(_rr)
     return _r
 
   @staticmethod

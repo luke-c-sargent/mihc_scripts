@@ -16,10 +16,16 @@ class MIHCGalaxy(MIHCBase):
       lib_name = MIHCGalaxyLibrary.DEFAULT_LIBRARY_NAME
     self._gi = GalaxyInstance(url=galaxy_address, key=api_key)
     self._lib = MIHCGalaxyLibrary(self._gi, lib_name)
-
+    self._hists = []
     _rs = []
-    for _k in samples:
-      _r = samples[_k].library_sync(self._lib)
-      if _r:
-        _rs.append(_r)
-    self._results = _rs
+    # samples = dict of MIHCData objects 
+    # K: V == source directory: MIHCDataset Object
+    for _s in samples: # each sample needs:
+      # a history
+      _hname = samples[_s].get_data()["source_dir"].split('/')[-1]
+      _h = MIHCHistory(name=_hname, galaxy_instance=self._gi)
+      # that history, populated
+      _h.add_data(samples[_s])
+      # a workflow invoked against that history
+      #collect results
+asdffdaasdffdaasdf
