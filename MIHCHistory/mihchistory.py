@@ -32,6 +32,7 @@ class MIHCHistory(MIHCBase):
     # for every dataset element, determine if its a list or a string
       # add dataset if its a simple string
       # add dataset collection if it's a list
+    pass
     raise Exception("IMPLEMENT ME PLEASE")
 
   def _add_dataset(self, data):
