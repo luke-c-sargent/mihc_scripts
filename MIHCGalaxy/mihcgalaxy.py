@@ -21,6 +21,7 @@ class MIHCGalaxy(MIHCBase):
     # samples = dict of MIHCData objects 
     # K: V == source directory: MIHCDataset Object
     for _s in samples: # each sample needs:
+      pass
       # a history
       _hname = samples[_s].get_data()["source_dir"].split('/')[-1]
       _h = MIHCHistory(name=_hname, galaxy_instance=self._gi)
@@ -28,4 +29,3 @@ class MIHCGalaxy(MIHCBase):
       _h.add_data(samples[_s])
       # a workflow invoked against that history
       #collect results
-asdffdaasdffdaasdf
