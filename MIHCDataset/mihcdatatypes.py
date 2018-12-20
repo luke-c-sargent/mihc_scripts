@@ -61,7 +61,7 @@ class BaseMIHCData(MIHCBase):
     print("--vs:")
     for _ffs in _fs:
       print(_ffs)
-    exit()
+
     # for every object already in the library....
     for _f in _fs:
       if _f['type'] != 'file': # ignore non-files
@@ -82,6 +82,8 @@ class BaseMIHCData(MIHCBase):
         for _ef in extant_files:
           print(" - {}".format(_ef))
           _r.remove(_ef)
+    print("final R:\n{}".format(_r))
+    exit()
     return _r
 
   @staticmethod
