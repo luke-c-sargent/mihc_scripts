@@ -36,12 +36,11 @@ class MIHCHistory(MIHCBase):
     # for every dataset element, determine if its a list or a string
     for _e in _elements:
       _val = _elements[_e]
-      _fname, _srcdir = _extract_file_and_folder(_e)
       # add dataset if its a simple string
       if instanceof(_val, str):
         self._add_dataset(_val, library)
       # add dataset collection if it's a list
-      elif istanceof(_val, list):
+      elif instanceof(_val, list):
         pass
       else:
         self.err("Dataset has weird file {} whose type {} is strange".format(_e, type(_val)))
