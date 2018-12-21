@@ -16,15 +16,33 @@ class MIHCGalaxy(MIHCBase):
       lib_name = MIHCGalaxyLibrary.DEFAULT_LIBRARY_NAME
     self._gi = GalaxyInstance(url=galaxy_address, key=api_key)
     self._lib = MIHCGalaxyLibrary(self._gi, lib_name)
+    self._wfc = WorkflowClient(self._gi)
+    def add_workflow(d):
+      if isinstance(d, dict):
+        return self._wfc.import_workflow_dict(d)
+      elif isfile(d):
+        return self._wfc.import_workflow_from_local_path(d)
+      else:
+        self.err("No workflow found")
     self._hists = []
     _rs = []
     # samples = dict of MIHCData objects 
     # K: V == source directory: MIHCDataset Object
     for _s in samples: # each sample needs:
+      _r = {}
       # a history
       _hname = samples[_s].get_data()["source_dir"].split('/')[-1]
       _h = MIHCHistory(name=_hname, galaxy_instance=self._gi)
       # that history, populated
       _h.add_data(samples[_s], self._lib)
+      _hinfo = _h.get_dataset_info()
+      _ds_info = _hinfo["datasets"]
+      _dsc_info = _hinfo["dataset_collections"]
+      print("DS:\n{}\nDSC:\n{}\n!!!!!!!!!!!!!!!!!!!!!!!".format(_ds_info, _dsc_info))
+      exit()
+      # a workflow added
+      _wf = samples[_s]._data["parent_workflow"]
+      _r = add_workflow(_wf)
       # a workflow invoked against that history
+      self._wfc.invoke_workflow(_r["id"], inputs=_inputs, history_id=_h._data["id"])
       #collect results

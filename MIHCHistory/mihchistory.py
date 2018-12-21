@@ -16,6 +16,8 @@ class MIHCHistory(MIHCBase):
   def __init__(self, name=None, galaxy_instance=None, id=None, check_by="id", timestamp_new=True):
     self._hist = histories.HistoryClient(galaxy_instance)
     self._data = None
+    self._datasets = []
+    self._dataset_collections = []
     if id:
       # check if its already created
       raise Exception("Not yet implemented")
@@ -32,20 +34,24 @@ class MIHCHistory(MIHCBase):
       self.err("Need either a name to create a new history or an id to find existent")
 
   def add_data(self, dataset, library):
-    _r = []
     _elements = dataset.get_files()
     # for every dataset element, determine if its a list or a string
     for _e in _elements:
       _val = _elements[_e]
       # add dataset if its a simple string
       if isinstance(_val, str):
-        continue # REMOVE DIS AFTER BELOW
-        self._add_dataset(_val, library)
+        self._datasets.append(self._add_dataset(_val, library))
       # add dataset collection if it's a list
       elif isinstance(_val, list):
-        _r.append(self._add_dataset_collection(_val, library))
+        self._dataset_collections.append(self._add_dataset_collection(_val, library))
       else:
         self.err("Dataset has weird file {} whose type {} is strange".format(_e, type(_val)))
+
+  def get_dataset_info(self):
+    return {
+      "datasets": self._datasets,
+      "dataset_collections": self._dataset_collections
+    }
 
   def _add_dataset(self, data, library):
     _fname, _srcpath = MIHCHistory._extract_file_and_folder(data)
@@ -70,4 +76,4 @@ class MIHCHistory(MIHCBase):
     }
     return self._hist.create_dataset_collection(self._data["id"], _description)
 
-    raise Exception("IMPLEMENT ME PLEASE")
+  def run_wflow()

@@ -1,15 +1,22 @@
 from MIHCBase import MIHCBase
+from workflows import workflows
+
 
 from os.path import isfile, isdir
 
 class BaseMIHCData(MIHCBase):
   
-  CONTENTS = {} # MUST HAVE source_dir AND parent_workflow PATHS AS ENTRIES
+  CONTENTS = {} # MUST HAVE source_dir PATH AS ENTRY
+  
+  def _get_workflow(self):
+    return workflows[self.__class__.__name__]
   
   def __init__(self, location=None, data=None):
+    self._data = {}
     self.in_library = False
     if location:
-      self._data = self.check_data(location)
+      self._data["parent_workflow"] = self._get_workflow()
+      self._data.extend(self.check_data(location))
     elif data:
       self._data = data
       if not self.validate():
@@ -133,7 +140,6 @@ class MIHCFullRun(BaseMIHCData):
       "images" : [],
       "nuclei" : "",
       "annotation" : "",
-      "parent_workflow": "",
       "cppipe": "",
       "source_dir": location
     }
@@ -159,22 +165,22 @@ class MIHCFullRun(BaseMIHCData):
     if _result["nuclei"] in _result["images"]:
       _result["images"].remove(_result["nuclei"])
     # find parent workflow, remove trailing '/'
-    _l = location if location[-1] != '/' else location[:-1]
-    parent_dir = '/'.join(_l.split('/')[:-1])
-    _files, _dirs = MIHCBase._list_dir(parent_dir)
-    _wf = ""
-    for f in _files:
-      if f[-3:] == ".ga":
-        if not _wf:
-          _wf = f
-        else:
-          MIHCBase.dbg("Multiple workflows found where one was expected:\n\t{} and {}... quitting.".format(_wf, f))
-          return {}
-    if _wf:
-      _result["parent_workflow"] = _wf
-    else:
-      MIHCBase.dbg("No workflows found in parent directory {}... can't process".format(parent_dir))
-      return {}
+    # _l = location if location[-1] != '/' else location[:-1]
+    # parent_dir = '/'.join(_l.split('/')[:-1])
+    # _files, _dirs = MIHCBase._list_dir(parent_dir)
+    # _wf = ""
+    # for f in _files:
+    #   if f[-3:] == ".ga":
+    #     if not _wf:
+    #       _wf = f
+    #     else:
+    #       MIHCBase.dbg("Multiple workflows found where one was expected:\n\t{} and {}... quitting.".format(_wf, f))
+    #       return {}
+    # if _wf:
+    #   _result["parent_workflow"] = _wf
+    # else:
+    #   MIHCBase.dbg("No workflows found in parent directory {}... can't process".format(parent_dir))
+    #   return {}
     for _k in _result:
       if not _result[_k]:
         MIHCBase.warn("Missing required input: {}".format(_k))
