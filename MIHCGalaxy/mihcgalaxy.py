@@ -3,7 +3,7 @@ import json
 
 from datetime import datetime
 
-from bioblend.galaxy import GalaxyInstance, libraries, histories
+from bioblend.galaxy import GalaxyInstance, workflows
 
 from MIHCBase import MIHCBase
 from MIHCGalaxyLibrary import MIHCGalaxyLibrary
@@ -16,7 +16,7 @@ class MIHCGalaxy(MIHCBase):
       lib_name = MIHCGalaxyLibrary.DEFAULT_LIBRARY_NAME
     self._gi = GalaxyInstance(url=galaxy_address, key=api_key)
     self._lib = MIHCGalaxyLibrary(self._gi, lib_name)
-    self._wfc = WorkflowClient(self._gi)
+    self._wfc = workflows.WorkflowClient(self._gi)
     def add_workflow(d):
       if isinstance(d, dict):
         return self._wfc.import_workflow_dict(d)
