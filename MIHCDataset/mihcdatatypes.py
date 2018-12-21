@@ -1,5 +1,5 @@
 from MIHCBase import MIHCBase
-from workflows import workflows
+import workflows
 
 
 from os.path import isfile, isdir
