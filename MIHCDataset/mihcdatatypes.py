@@ -15,10 +15,10 @@ class BaseMIHCData(MIHCBase):
     self.in_library = False
     if location:
       self._data["parent_workflow"] = self._get_workflow()
-      self._data.extend(self.check_data(location))
+      self._data.update(self.check_data(location))
     elif data:
       self._data["parent_workflow"] = self._get_workflow()
-      self._data.extend(data)
+      self._data.update(data)
       if not self.validate():
         self.err("Error: invalid dataset:\n{}".format(self._data))
   
