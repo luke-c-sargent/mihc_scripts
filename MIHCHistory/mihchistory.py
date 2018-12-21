@@ -75,5 +75,3 @@ class MIHCHistory(MIHCBase):
       "name": "Marker Image set"
     }
     return self._hist.create_dataset_collection(self._data["id"], _description)
-
-  def run_wflow()
