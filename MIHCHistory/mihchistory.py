@@ -32,24 +32,42 @@ class MIHCHistory(MIHCBase):
       self.err("Need either a name to create a new history or an id to find existent")
 
   def add_data(self, dataset, library):
+    _r = []
     _elements = dataset.get_files()
     # for every dataset element, determine if its a list or a string
     for _e in _elements:
       _val = _elements[_e]
       # add dataset if its a simple string
       if isinstance(_val, str):
+        continue # REMOVE DIS AFTER BELOW
         self._add_dataset(_val, library)
       # add dataset collection if it's a list
       elif isinstance(_val, list):
-        pass
+        _r.append(self._add_dataset_collection(_val))
       else:
         self.err("Dataset has weird file {} whose type {} is strange".format(_e, type(_val)))
-    #raise Exception("IMPLEMENT ME PLEASE")
 
   def _add_dataset(self, data, library):
     _fname, _srcpath = MIHCHistory._extract_file_and_folder(data)
     _file_id = library.get_file_id(_fname, _srcpath)
     return self._hist.upload_dataset_from_library(self._data["id"], _file_id)
     
-  def _add_dataset_collection():
+  def _add_dataset_collection(self, data, library):
+    _e_ids = []
+    for _datum in data:
+      _fname, _srcpath = MIHCHistory._extract_file_and_folder(_datum)
+      _file_id = library.get_file_id(_fname, _srcpath)
+      _e = {
+        "id": _file_id,
+        "name": _fname,
+        "src":"lda"
+      }
+      _e_ids.append(_e)
+    _description = {
+      "collection_type": "list",
+      "element_identifiers": _e_ids,
+      "name": "Marker Image set"
+    }
+    return self._hist.create_dataset_collection(self._data["id"], _description)
+
     raise Exception("IMPLEMENT ME PLEASE")
