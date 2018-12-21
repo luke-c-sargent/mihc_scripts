@@ -96,6 +96,8 @@ class BaseMIHCData(MIHCBase):
   def validate(self):
     _d = self.get_data()
     for _k in _d:
+      if _k == "parent_workflow":
+        continue
       if not isinstance(_d[_k], self.CONTENTS[_k]):
         self.warn("data entry for {} is not of type {}".format(_k, self.CONTENTS[_k]))
         return False
