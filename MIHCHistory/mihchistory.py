@@ -60,7 +60,7 @@ class MIHCHistory(MIHCBase):
       _e = {
         "id": _file_id,
         "name": _fname,
-        "src":"lda"
+        "src":"ldda"
       }
       _e_ids.append(_e)
     _description = {
