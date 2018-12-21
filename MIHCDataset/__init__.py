@@ -1,2 +1,2 @@
-from .mihcdatatypes import MIHCFullRun, BaseMIHCData
 from .workflows import workflows
+from .mihcdatatypes import MIHCFullRun, BaseMIHCData
