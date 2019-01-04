@@ -89,6 +89,10 @@ class BaseMIHCData(MIHCBase):
   def check_data(location):
     raise Exception("ABSTRACT MIHCDATA FUNCTION 'check_data' NOT DEFINED")
   
+  @classmethod
+  def get_inputs(cls):
+    return cls.CONTENTS.keys()
+  
   def get_data(self):
     return self._data
   

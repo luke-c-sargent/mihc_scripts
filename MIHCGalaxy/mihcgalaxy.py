@@ -29,7 +29,7 @@ class MIHCGalaxy(MIHCBase):
     # samples = dict of MIHCData objects 
     # K: V == source directory: MIHCDataset Object
     for _s in samples: # each sample needs:
-      print(_s)
+      _datatype_name = type(samples[_s]).__name__
       _r = {}
       # a history
       _hname = samples[_s].get_data()["source_dir"].split('/')[-1]
@@ -42,11 +42,13 @@ class MIHCGalaxy(MIHCBase):
       
       #The map must be in the following format: {'<input_index>': {'id': <encoded dataset ID>, 'src': '[ldda, ld, hda, hdca]'}} (e.g. {'2': {'id': '29beef4fadeed09f', 'src': 'hda'}})
       
-      print("DS:\n{}\nDSC:\n{}\n!!!!!!!!!!!!!!!!!!!!!!!".format(_ds_info, _dsc_info))
-      exit()
+      #print("DS:\n{}\nDSC:\n{}\n!!!!!!!!!!!!!!!!!!!!!!!".format(_ds_info, _dsc_info))
+      #exit()
       # a workflow added
       _wf = samples[_s]._data["parent_workflow"]
       _r = add_workflow(_wf)
+      print(_r)
+      exit()
       # a workflow invoked against that history
       self._wfc.invoke_workflow(_r["id"], inputs=_inputs, history_id=_h._data["id"])
       #collect results
