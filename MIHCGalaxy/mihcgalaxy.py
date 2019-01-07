@@ -40,11 +40,9 @@ class MIHCGalaxy(MIHCBase):
       _ds_info = _hinfo["datasets"] #list with hda_ldda, id, dataset_id
       _dsc_info = _hinfo["dataset_collections"] #list with 
       
-      _labels = _s.get_inputs()
+      _labels = samples[_s].get_inputs()
       #The map must be in the following format: {'<input_index>': {'id': <encoded dataset ID>, 'src': '[ldda, ld, hda, hdca]'}} (e.g. {'2': {'id': '29beef4fadeed09f', 'src': 'hda'}})
-      
-      #print("DS:\n{}\nDSC:\n{}\n!!!!!!!!!!!!!!!!!!!!!!!".format(_ds_info, _dsc_info))
-      #exit()
+
       # a workflow added
       _wf = samples[_s]._data["parent_workflow"]
       _r = add_workflow(_wf)
