@@ -167,7 +167,7 @@ class MIHCFullRun(BaseMIHCData):
         else:
           MIHCBase.dbg("adding nuclei file {}".format(f[:-3] + "svs"))
           _result["TARGET_NUC"] = f[:-3] + "svs"
-      elif f[-6:] == "CP_PIPELINE":
+      elif f[-6:] == "cppipe":
         _result["CP_PIPELINE"] = f
       elif f[-3:] == "svs":
         _result["MARKER_COL"].append(f)
