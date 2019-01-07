@@ -40,6 +40,7 @@ class MIHCGalaxy(MIHCBase):
       _ds_info = _hinfo["datasets"] #list with hda_ldda, id, dataset_id
       _dsc_info = _hinfo["dataset_collections"] #list with 
       
+      _labels = _s.get_inputs()
       #The map must be in the following format: {'<input_index>': {'id': <encoded dataset ID>, 'src': '[ldda, ld, hda, hdca]'}} (e.g. {'2': {'id': '29beef4fadeed09f', 'src': 'hda'}})
       
       #print("DS:\n{}\nDSC:\n{}\n!!!!!!!!!!!!!!!!!!!!!!!".format(_ds_info, _dsc_info))
@@ -47,8 +48,28 @@ class MIHCGalaxy(MIHCBase):
       # a workflow added
       _wf = samples[_s]._data["parent_workflow"]
       _r = add_workflow(_wf)
-      print(_r)
-      exit()
+      _inputs = {}
+      # for every label,
+      for _l in _labels.keys():
+        # get hdda / hda association
+        _src = ""
+        _data_src = None
+        _data_id = None
+        if _labels[_l] == list:
+          _src = "hdca"
+          _data_src = _dsc_info
+        elif _labels[_l] == str:
+          _src = "hda"
+          _data_src = _ds_info
+        for _d in _data_src:
+          if _d["name"] == _l:
+            _data_id = _d["id"]
+            break
+        _in_idx = self._wfc.get_workflow_inputs(_r["id"], _l)[0]
+        _inputs[_in_idx] = {
+          "id": data_id,
+          "src": _src
+        }
       # a workflow invoked against that history
       self._wfc.invoke_workflow(_r["id"], inputs=_inputs, history_id=_h._data["id"])
       #collect results

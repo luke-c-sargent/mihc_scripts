@@ -33,6 +33,15 @@ class MIHCHistory(MIHCBase):
     else:
       self.err("Need either a name to create a new history or an id to find existent")
 
+  def get_id(self):
+    return self._data["id"]
+    
+  def get_current_info(self):
+    return self._data = self._hist.get_histories(history_id = self._data["id"])
+    
+  def get_history_contents(self):
+    return self._data = self._hist.show_history(history_id = self._data["id"], contents = True)
+
   def add_data(self, dataset, library):
     _elements = dataset.get_files()
     # for every dataset element, determine if its a list or a string

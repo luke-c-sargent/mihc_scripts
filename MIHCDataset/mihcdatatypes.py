@@ -5,7 +5,7 @@ from os.path import isfile, isdir
 
 class BaseMIHCData(MIHCBase):
   
-  CONTENTS = {} # MUST HAVE source_dir PATH AS ENTRY
+  CONTENTS = {} # MUST HAVE source_dir, parent_workflow PATH AS ENTRY
   
   def _get_workflow(self):
     return workflows[self.__class__.__name__]
@@ -91,7 +91,11 @@ class BaseMIHCData(MIHCBase):
   
   @classmethod
   def get_inputs(cls):
-    return cls.CONTENTS.keys()
+    _r = dict(cls.CONTENTS)
+    for _val in ["parent_workflow", "source_dir"]:
+      if _val in _r:
+        del _r[_val]
+    return _r
   
   def get_data(self):
     return self._data
@@ -127,11 +131,11 @@ class BaseMIHCData(MIHCBase):
 class MIHCFullRun(BaseMIHCData):
   
   CONTENTS = {
-    "images": list,
-    "nuclei": str,
-    "annotation": str,
+    "MARKER_COL": list,
+    "TARGET_NUC": str,
+    "ANNOT_XML": str,
     "parent_workflow": str,
-    "cppipe": str,
+    "CP_PIPELINE": str,
     "source_dir": str
   }
   
@@ -143,10 +147,10 @@ class MIHCFullRun(BaseMIHCData):
       return {}
 
     _result = {
-      "images" : [],
-      "nuclei" : "",
-      "annotation" : "",
-      "cppipe": "",
+      "MARKER_COL" : [],
+      "TARGET_NUC" : "",
+      "ANNOT_XML" : "",
+      "CP_PIPELINE": "",
       "source_dir": location
     }
     # data is: files
@@ -155,38 +159,21 @@ class MIHCFullRun(BaseMIHCData):
     for f in _files:
       if f[-3:] == "xml":
         MIHCBase.dbg("found xml file {}".format(f))
-        _result["annotation"] = f
+        _result["ANNOT_XML"] = f
         # xml present, is complementary .svs also present?
         if str(f[:-3] + "svs") not in _files:
            MIHCBase.dbg("FULL RUN DATASET: missing required nuclei image file: \n\t-[{}]".format(f[:-3] + "svs"))
            return {}
         else:
           MIHCBase.dbg("adding nuclei file {}".format(f[:-3] + "svs"))
-          _result["nuclei"] = f[:-3] + "svs"
-      elif f[-6:] == "cppipe":
-        _result["cppipe"] = f
+          _result["TARGET_NUC"] = f[:-3] + "svs"
+      elif f[-6:] == "CP_PIPELINE":
+        _result["CP_PIPELINE"] = f
       elif f[-3:] == "svs":
-        _result["images"].append(f)
+        _result["MARKER_COL"].append(f)
     # remove nuclei file from images
-    if _result["nuclei"] in _result["images"]:
-      _result["images"].remove(_result["nuclei"])
-    # find parent workflow, remove trailing '/'
-    # _l = location if location[-1] != '/' else location[:-1]
-    # parent_dir = '/'.join(_l.split('/')[:-1])
-    # _files, _dirs = MIHCBase._list_dir(parent_dir)
-    # _wf = ""
-    # for f in _files:
-    #   if f[-3:] == ".ga":
-    #     if not _wf:
-    #       _wf = f
-    #     else:
-    #       MIHCBase.dbg("Multiple workflows found where one was expected:\n\t{} and {}... quitting.".format(_wf, f))
-    #       return {}
-    # if _wf:
-    #   _result["parent_workflow"] = _wf
-    # else:
-    #   MIHCBase.dbg("No workflows found in parent directory {}... can't process".format(parent_dir))
-    #   return {}
+    if _result["TARGET_NUC"] in _result["MARKER_COL"]:
+      _result["MARKER_COL"].remove(_result["TARGET_NUC"])
     for _k in _result:
       if not _result[_k]:
         MIHCBase.warn("Missing required input: {}".format(_k))
