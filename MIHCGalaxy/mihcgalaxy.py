@@ -65,7 +65,7 @@ class MIHCGalaxy(MIHCBase):
             break
         _in_idx = self._wfc.get_workflow_inputs(_r["id"], _l)[0]
         _inputs[_in_idx] = {
-          "id": data_id,
+          "id": _data_id,
           "src": _src
         }
       # a workflow invoked against that history
