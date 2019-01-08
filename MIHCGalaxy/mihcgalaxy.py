@@ -29,6 +29,8 @@ class MIHCGalaxy(MIHCBase):
     # samples = dict of MIHCData objects 
     # K: V == source directory: MIHCDataset Object
     for _s in samples: # each sample needs:
+      # library sync
+      samples[_s].library_sync(self._lib)
       _datatype_name = type(samples[_s]).__name__
       _r = {}
       # a history
@@ -69,8 +71,8 @@ class MIHCGalaxy(MIHCBase):
             if _d["name"] == _l:
               _data_id = _d["id"]
               break
-          elif _d["history_content"] == 'dataset':
-            if _d["file_name"] == _sample_data[_l]
+          elif _d["history_content_type"] == 'dataset':
+            if _d["file_name"] == _sample_data[_l]:
               _data_id = _d["id"]
               break
         _in_idx = self._wfc.get_workflow_inputs(_r["id"], _l)[0]

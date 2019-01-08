@@ -8,7 +8,7 @@ class MIHCBase:
     pass
 
   @staticmethod
-  def err(msg, raise_e = False):
+  def err(msg, raise_e = True):
     if raise_e:
       logging.error(msg + " -- raising exception")
       raise Exception(msg)
