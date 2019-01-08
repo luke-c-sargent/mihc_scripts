@@ -52,7 +52,7 @@ class MIHCHistory(MIHCBase):
         self._datasets.append(self._add_dataset(_val, library))
       # add dataset collection if it's a list
       elif isinstance(_val, list):
-        self._dataset_collections.append(self._add_dataset_collection(_val, library))
+        self._dataset_collections.append(self._add_dataset_collection(_val, library, _e))
       else:
         self.err("Dataset has weird file {} whose type {} is strange".format(_e, type(_val)))
 
@@ -67,7 +67,7 @@ class MIHCHistory(MIHCBase):
     _file_id = library.get_file_id(_fname, _srcpath)
     return self._hist.upload_dataset_from_library(self._data["id"], _file_id)
     
-  def _add_dataset_collection(self, data, library):
+  def _add_dataset_collection(self, data, library, name="Image Set"):
     _e_ids = []
     for _datum in data:
       _fname, _srcpath = MIHCHistory._extract_file_and_folder(_datum)
