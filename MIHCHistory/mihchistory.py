@@ -81,6 +81,6 @@ class MIHCHistory(MIHCBase):
     _description = {
       "collection_type": "list",
       "element_identifiers": _e_ids,
-      "name": "Marker Image set"
+      "name": name
     }
     return self._hist.create_dataset_collection(self._data["id"], _description)
