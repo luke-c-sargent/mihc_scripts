@@ -22,9 +22,9 @@ class BaseMIHCData(MIHCBase):
       wfs = []
       cppipes = []
       for _f in _files:
-        if _f[-3:] == ".ga"
+        if _f[-3:] == ".ga":
           wfs.append(_f)
-        elif _f[-7:] == ".cppipe"
+        elif _f[-7:] == ".cppipe":
           cppipes.append(_f)
       if len(wfs) > 1 or len(wfs) == 0:
         self.err("Require exactly 1 workflow; found {} in dir {}".format(len(wfs), _parent_dir))
