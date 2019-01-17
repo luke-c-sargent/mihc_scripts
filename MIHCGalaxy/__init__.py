@@ -1,1 +1,0 @@
-from .mihcgalaxy import MIHCGalaxy
