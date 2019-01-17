@@ -167,7 +167,6 @@ class MIHCFullRun(BaseMIHCData):
       "MARKER_COL" : [],
       "TARGET_NUC" : "",
       "ANNOT_XML" : "",
-      "CP_PIPELINE": "",
       "source_dir": location
     }
     # data is: files
