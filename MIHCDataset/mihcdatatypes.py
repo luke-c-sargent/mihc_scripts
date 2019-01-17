@@ -7,20 +7,37 @@ class BaseMIHCData(MIHCBase):
   
   CONTENTS = {} # MUST HAVE source_dir, parent_workflow PATH AS ENTRY
   
-  def _get_workflow(self):
+  def _get_dict_workflow(self):
     return workflows[self.__class__.__name__]
   
   def __init__(self, location=None, data=None):
     self._data = {}
     self.in_library = False
     if location:
-      self._data["parent_workflow"] = self._get_workflow()
+      _loc = location
+      if _loc[-1] == '/':
+        _loc = _loc[:-1]
+      _parent_dir = "/".join(_loc.split('/')[:-1])
+      _files = self._list_dir(_parent_dir)[0]
+      wfs = []
+      cppipes = []
+      for _f in _files:
+        if _f[-3:] == ".ga"
+          wfs.append(_f)
+        elif _f[-7:] == ".cppipe"
+          cppipes.append(_f)
+      if len(wfs) > 1 or len(wfs) == 0:
+        self.err("Require exactly 1 workflow; found {} in dir {}".format(len(wfs), _parent_dir))
+      else:
+        self._data["parent_workflow"] = wfs[0]
+      if len(cppipes) > 1 or len(cppipes) == 0:
+        self.err("Require exactly 1 cppipe file; found {} in dir {}".format(len(cppipes), _parent_dir))
+      else:
+        self._data["CP_PIPELINE"] = cppipes[0]
+      #self._data["parent_workflow"] = self._get_workflow()
       self._data.update(self.check_data(location))
-    elif data:
-      self._data["parent_workflow"] = self._get_workflow()
-      self._data.update(data)
-      if not self.validate():
-        self.err("Error: invalid dataset:\n{}".format(self._data))
+    elif (not location):
+      self.err("Please provide location")
   
   def __repr__(self):
     _r = "<MIHCDataset>\n"
@@ -167,8 +184,6 @@ class MIHCFullRun(BaseMIHCData):
         else:
           MIHCBase.dbg("adding nuclei file {}".format(f[:-3] + "svs"))
           _result["TARGET_NUC"] = f[:-3] + "svs"
-      elif f[-6:] == "cppipe":
-        _result["CP_PIPELINE"] = f
       elif f[-3:] == "svs":
         _result["MARKER_COL"].append(f)
     # remove nuclei file from images

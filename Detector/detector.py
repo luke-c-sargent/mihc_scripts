@@ -29,7 +29,7 @@ class Detector(MIHCBase):
     for _data_class in self.DATA_CLASSES:
       _r = _data_class.check_data(location)
       if _r:
-        _rs.append(_data_class(data=_r))
+        _rs.append(_data_class(location=location, data=_r))
     if not _rs:
       return {}
     if _rs and len(_rs) > 1:
