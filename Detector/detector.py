@@ -2,7 +2,7 @@ import json
 from os import listdir,getcwd
 from os.path import isfile, isdir
 from mihc_scripts.MIHCBase.mihcbase import MIHCBase
-from MIHCDataset import MIHCFullRun
+from mihc_scripts.MIHCDataset.mihcdatatypes import MIHCFullRun
 
 
 class Detector(MIHCBase):

@@ -6,8 +6,8 @@ from datetime import datetime
 from bioblend.galaxy import GalaxyInstance, workflows
 
 from mihc_scripts.MIHCBase.mihcbase import MIHCBase
-from MIHCGalaxyLibrary import MIHCGalaxyLibrary
-from MIHCHistory import MIHCHistory
+from mihc_scripts.MIHCGalaxyLibrary.mihclibrary import MIHCGalaxyLibrary
+from mihc_scripts.MIHCHistory.mihchistory import MIHCHistory
 
 class MIHCGalaxy(MIHCBase):
   
