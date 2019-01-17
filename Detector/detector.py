@@ -1,7 +1,7 @@
 import json
 from os import listdir,getcwd
 from os.path import isfile, isdir
-from MIHCBase import MIHCBase
+from mihc_scripts.MIHCBase.mihcbase import MIHCBase
 from MIHCDataset import MIHCFullRun
 
 

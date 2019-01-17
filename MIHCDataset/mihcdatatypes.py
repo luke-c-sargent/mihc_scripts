@@ -1,4 +1,4 @@
-from MIHCBase import MIHCBase
+from mihc_scripts.MIHCBase.mihcbase import MIHCBase
 from . import workflows
 
 from os.path import isfile, isdir

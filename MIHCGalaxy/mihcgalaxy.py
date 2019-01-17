@@ -5,7 +5,7 @@ from datetime import datetime
 
 from bioblend.galaxy import GalaxyInstance, workflows
 
-from MIHCBase import MIHCBase
+from mihc_scripts.MIHCBase.mihcbase import MIHCBase
 from MIHCGalaxyLibrary import MIHCGalaxyLibrary
 from MIHCHistory import MIHCHistory
 
