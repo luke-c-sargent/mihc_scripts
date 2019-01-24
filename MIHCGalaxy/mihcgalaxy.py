@@ -2,6 +2,7 @@ import argparse
 import json
 
 from datetime import datetime
+from os.path import isfile
 
 from bioblend.galaxy import GalaxyInstance, workflows
 
