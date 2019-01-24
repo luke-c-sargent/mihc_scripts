@@ -47,7 +47,12 @@ class MIHCGalaxyLibrary(MIHCBase):
 
   def _get_lib(self):
     self.dbg("checking for library {}".format(self._lib))
-    _r = self._lib.get_libraries(name=self.name)
+    _temp_r = self._lib.get_libraries(name=self.name)
+    _r = []
+    for _ in _temp_r:
+      if (_['deleted'] == "true")
+        continue
+      _r.append(_)
     if len(_r) > 1:
       self.err("there should be exactly one repo named {}.... {} found.".format(LIBRARY_NAME, len(_r)))
     elif len(_r) == 0:
