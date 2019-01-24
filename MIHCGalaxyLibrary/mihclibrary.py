@@ -24,7 +24,7 @@ class MIHCGalaxyLibrary(MIHCBase):
     # get lib info, create if needed, error if multiples
     _lib = self._get_lib()
     if not _lib:
-      _lib = self._create_lib(self.name, self.description)
+      _lib = self._create_lib()
     self.__dict__.update(_lib)
     self._update_contents()
 
@@ -62,7 +62,7 @@ class MIHCGalaxyLibrary(MIHCBase):
 
   def _create_lib(self):
     self.dbg("creating library {}".format(lib_name))
-    _n = self._lib.create_library(self._name, self._description)["name"]
+    _n = self._lib.create_library(self.name, self.description)["name"]
     return self._get_lib(_n)
 
   def _create_lib_folder(self, folder_name):
