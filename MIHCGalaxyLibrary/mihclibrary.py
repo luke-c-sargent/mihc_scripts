@@ -62,7 +62,7 @@ class MIHCGalaxyLibrary(MIHCBase):
 
   def _create_lib(self):
     self.dbg("creating library {}".format(self.name))
-    return self._lib.create_library(self.name, self.description)["name"]
+    return self._lib.create_library(self.name, self.description)
 
   def _create_lib_folder(self, folder_name):
     # ensure it doesn't already exist
@@ -73,6 +73,8 @@ class MIHCGalaxyLibrary(MIHCBase):
           return _f
     self.dbg("creating library folder {} in library id={}".format(folder_name, self.id))
     _r = self._lib.create_folder(self.id, folder_name, description="Sample {}".format(folder_name))
+    if type(_r) == list and len(_r) == 1:
+      _r = _r[0]
     self._update_contents()
     return _r
   
