@@ -44,12 +44,13 @@ class MIHCHistory(MIHCBase):
 
   def add_data(self, dataset, library):
     _elements = dataset.get_files()
+    parent_folder = dataset._data["source_dir"].split('/')[-1:]
     # for every dataset element, determine if its a list or a string
     for _e in _elements:
       _val = _elements[_e]
       # add dataset if its a simple string
       if isinstance(_val, str):
-        self._datasets.append(self._add_dataset(_val, library))
+        self._datasets.append(self._add_dataset(_val, library, parent_folder))
       # add dataset collection if it's a list
       elif isinstance(_val, list):
         self._dataset_collections.append(self._add_dataset_collection(_val, library, _e))
@@ -62,8 +63,10 @@ class MIHCHistory(MIHCBase):
       "dataset_collections": self._dataset_collections
     }
 
-  def _add_dataset(self, data, library):
+  def _add_dataset(self, data, library, folder=None):
     _fname, _srcpath = MIHCHistory._extract_file_and_folder(data)
+    if folder:
+      _srcpath = folder
     _file_id = library.get_file_id(_fname, _srcpath)
     return self._hist.upload_dataset_from_library(self._data["id"], _file_id)
     
