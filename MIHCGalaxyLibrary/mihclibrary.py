@@ -61,7 +61,7 @@ class MIHCGalaxyLibrary(MIHCBase):
       return _r[0]
 
   def _create_lib(self):
-    self.dbg("creating library {}".format(lib_name))
+    self.dbg("creating library {}".format(self.name))
     _n = self._lib.create_library(self.name, self.description)["name"]
     return self._get_lib(_n)
 
