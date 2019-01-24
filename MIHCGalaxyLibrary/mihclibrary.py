@@ -50,7 +50,7 @@ class MIHCGalaxyLibrary(MIHCBase):
     _temp_r = self._lib.get_libraries(name=self.name)
     _r = []
     for _ in _temp_r:
-      if (_['deleted'] == "true")
+      if (_['deleted'] == "true"):
         continue
       _r.append(_)
     if len(_r) > 1:
