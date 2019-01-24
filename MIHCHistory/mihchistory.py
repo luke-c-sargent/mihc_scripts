@@ -44,7 +44,7 @@ class MIHCHistory(MIHCBase):
 
   def add_data(self, dataset, library):
     _elements = dataset.get_files()
-    parent_folder = dataset._data["source_dir"].split('/')[-1:]
+    parent_folder = dataset._data["source_dir"].split('/')[-1:][0]
     # for every dataset element, determine if its a list or a string
     for _e in _elements:
       _val = _elements[_e]
