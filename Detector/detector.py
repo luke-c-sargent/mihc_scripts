@@ -6,25 +6,18 @@ from mihc_scripts.MIHCDataset.mihcdatatypes import MIHCFullRun
 
 
 class Detector(MIHCBase):
-
-  # add classes that validate here
+  """Determines the type of sample set(s) recursively, given a source directory
+  """
+  # add validation classes here... see MIHCDataset/mihcdatatypes.py
   DATA_CLASSES = [ MIHCFullRun ]
   
-  def __init__(self, location=None, print=False):
-    # check provided location
-    if location:
-      if isdir(location):
-        self.ROOT = location
-      else:
-         self.err("'{}' is not a valid directory".format(location))
-    # otherwise it's the calling directory
-    else:
-      self.ROOT = getcwd()
-    # dict of MIHCData objects 
-    # K: V == source directory: MIHCDataset
+  def __init__(self, location, print=False):
+    # _find_mihc_data returns a dict of MIHCData objects:
+    #   K: V == source directory: MIHCDataset
     self._data = self._find_mihc_data(self.ROOT)
 
   def _is_mihc_folder(self, location):
+    """Checks if location is an MIHCDataset, returns data processor object if so"""
     _rs = []
     for _data_class in self.DATA_CLASSES:
       _r = _data_class.check_data(location)
@@ -40,6 +33,8 @@ class Detector(MIHCBase):
     return _rs[0]
 
   def _find_mihc_data(self, location):
+    """Recurses through directories looking for MIHC datasets
+    """
     self.dbg("looking in {}....".format(location))
     possible_locations = [location]
     results = {}

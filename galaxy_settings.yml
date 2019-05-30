@@ -1,0 +1,13 @@
+---
+# directory for the script to recrusively scan
+- sample_location: ""
+
+# an API key of a Galaxy administrator
+- galaxy_api_key: ""
+
+# address of Galaxy server
+- galaxy_server_address: ""
+
+# Galaxy server's port (if not 80)
+- galaxy_port: ""
+...

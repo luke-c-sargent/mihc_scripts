@@ -4,12 +4,15 @@ from . import workflows
 from os.path import isfile, isdir
 
 class BaseMIHCData(MIHCBase):
-  
+  """Base class to be used in creating MIHCData classes
+
+  Note: Accepts either local workflow, or predefined workflow from workflows.py
+  """
   CONTENTS = {} # MUST HAVE source_dir, parent_workflow PATH AS ENTRY
-  
+
   def _get_dict_workflow(self):
     return workflows[self.__class__.__name__]
-  
+
   def __init__(self, location=None, data=None):
     self._data = {}
     self.in_library = False
@@ -38,7 +41,7 @@ class BaseMIHCData(MIHCBase):
       self._data.update(self.check_data(location))
     elif (not location):
       self.err("Please provide location")
-  
+
   def __repr__(self):
     _r = "<MIHCDataset>\n"
     for _k in self._data.keys():
@@ -50,8 +53,9 @@ class BaseMIHCData(MIHCBase):
         _r += "\t{}\n".format(self._data[_k])
     _r +="</MIHCDataset>"
     return _r
-    
+
   def library_sync(self, library):
+    """Ensure this dataset is either added to or already in the specified library"""
     self.dbg("adding dataset to library {}:\n{}".format(library.name, self))
     if library and not self.in_library:
       _r = library._add_mihc_dataset(self)
@@ -61,8 +65,9 @@ class BaseMIHCData(MIHCBase):
     else:
       self.warn("Dataset upload to library {} not performed as all files present".format(library.name, self))
       return None
-      
+
   def get_files(self):
+    """Get a list of sample files"""
     _r = dict(self._data)
     del _r["source_dir"]
     del _r["parent_workflow"]
@@ -104,8 +109,9 @@ class BaseMIHCData(MIHCBase):
 
   @staticmethod
   def check_data(location):
+    """Abstract detection function classes extending BaseMIHCData must implement"""
     raise Exception("ABSTRACT MIHCDATA FUNCTION 'check_data' NOT DEFINED")
-  
+
   @classmethod
   def get_inputs(cls):
     _r = dict(cls.CONTENTS)
@@ -113,12 +119,12 @@ class BaseMIHCData(MIHCBase):
       if _val in _r:
         del _r[_val]
     return _r
-  
+
   def get_data(self):
     return self._data
-  
-  # ensure these files actually exist
+
   def validate(self):
+    """Ensure that detected files exist"""
     _d = self.get_data()
     for _k in _d:
       if _k == "parent_workflow":
@@ -146,7 +152,7 @@ class BaseMIHCData(MIHCBase):
         return True
 
 class MIHCFullRun(BaseMIHCData):
-  
+  """A Full MIHC workflow run"""
   CONTENTS = {
     "MARKER_COL": list,
     "TARGET_NUC": str,
@@ -155,11 +161,11 @@ class MIHCFullRun(BaseMIHCData):
     "CP_PIPELINE": str,
     "source_dir": str
   }
-  
+
   @staticmethod
   def check_data(location):
     _files, _dirs = MIHCBase._list_dir(location)
-    # easy out
+    # quick out
     if "Processed" in _dirs:
       return {}
 
@@ -193,5 +199,3 @@ class MIHCFullRun(BaseMIHCData):
         MIHCBase.warn("Missing required input: {}".format(_k))
         return {}
     return _result
-
-    

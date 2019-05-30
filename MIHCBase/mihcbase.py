@@ -4,6 +4,7 @@ from os import listdir
 from os.path import isfile, isdir
 
 class MIHCBase:
+  """A base class with common static functions every inheritor can use"""
   def __init__(self):
     pass
 

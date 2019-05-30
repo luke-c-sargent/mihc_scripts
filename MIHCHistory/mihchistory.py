@@ -3,26 +3,28 @@ from bioblend.galaxy import histories
 from datetime import datetime
 
 class MIHCHistory(MIHCBase):
-  
+  """Abstract out Galaxy History interactions required for MIHC analysis"""
+
   KEYS = [
     'name', 'id', 'items'
   ]
-  
+
   @staticmethod
   def _extract_file_and_folder(full_path):
     _split = full_path.split('/')
     return _split[-1], _split[-2]
-  
+
   def __init__(self, name=None, galaxy_instance=None, id=None, check_by="id", timestamp_new=True):
+    # initialize bioblend History client
     self._hist = histories.HistoryClient(galaxy_instance)
     self._data = None
     self._datasets = []
     self._dataset_collections = []
     if id:
       # check if its already created
-      raise Exception("Not yet implemented")
+      raise Exception("Not implemented") # this should not happen
     elif name:
-      # theres a name
+      # create unique string from name + date/time
       nonce=""
       if timestamp_new:
         nonce=str(datetime.utcnow()).split('.')[0]
@@ -35,14 +37,15 @@ class MIHCHistory(MIHCBase):
 
   def get_id(self):
     return self._data["id"]
-    
+
   def get_current_info(self):
     return self._hist.get_histories(history_id = self._data["id"])
-    
+
   def get_history_contents(self):
     return self._hist.show_history(history_id = self._data["id"], contents = True)
 
   def add_data(self, dataset, library):
+    """Adds a datasets to this history"""
     _elements = dataset.get_files()
     parent_folder = dataset._data["source_dir"].split('/')[-1:][0]
     # for every dataset element, determine if its a list or a string
@@ -69,7 +72,7 @@ class MIHCHistory(MIHCBase):
       _srcpath = folder
     _file_id = library.get_file_id(_fname, _srcpath)
     return self._hist.upload_dataset_from_library(self._data["id"], _file_id)
-    
+
   def _add_dataset_collection(self, data, library, name="Image Set"):
     _e_ids = []
     for _datum in data:

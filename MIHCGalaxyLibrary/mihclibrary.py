@@ -3,14 +3,15 @@ from bioblend.galaxy import libraries
 
 
 class MIHCGalaxyLibrary(MIHCBase):
-  
+  """Abstract out Galaxy library interactions required for MIHC analysis"""
+
   LIBRARY_KEYS = [
     "name", "id", "description"
   ]
-  
+
   DEFAULT_LIBRARY_NAME = "mIHC Sample Data Repository"
   DEFAULT_LIBRARY_DESCRIPTION = "the data library for mIHC sample data"
-  
+
   def __init__(self, galaxy_instance, lib_name=None, lib_description=None):
     if not lib_name:
       self.name = MIHCGalaxyLibrary.DEFAULT_LIBRARY_NAME
@@ -20,8 +21,9 @@ class MIHCGalaxyLibrary(MIHCBase):
       self.description = MIHCGalaxyLibrary.DEFAULT_LIBRARY_DESCRIPTION
     else:
       self.description = lib_description
+    # initialize bioblend Library object
     self._lib = libraries.LibraryClient(galaxy_instance)
-    # get lib info, create if needed, error if multiples
+    # get library info, create if needed, error if multiple libraries found
     _lib = self._get_lib()
     if not _lib:
       _lib = self._create_lib()
@@ -38,12 +40,10 @@ class MIHCGalaxyLibrary(MIHCBase):
         _s += "  - '{}'\n".format(_k)
     return _s + "</MIHCGalaxyLibrary>"
 
-
   # content keys: url, id, name, type
   def _update_contents(self):
+    """ check remote library's contents, update class's contents variable"""
     self.library_contents = self._lib.show_library(self.id, contents=True)
-    #for _lc in self.library_contents:
-     # print(_lc)
 
   def _get_lib(self):
     self.dbg("checking for library {}".format(self._lib))
@@ -77,7 +77,7 @@ class MIHCGalaxyLibrary(MIHCBase):
       _r = _r[0]
     self._update_contents()
     return _r
-  
+
   def _upload_file_to_dir(self, paths, folder_id):
     _r = None
     if paths:
@@ -97,6 +97,7 @@ class MIHCGalaxyLibrary(MIHCBase):
     return _r
 
   def _add_mihc_dataset(self, dataset):
+    """Helper function for single datasets"""
     _files = dataset._get_files_to_upload(self)
     if not _files:
       self.warn("Files already present in Data Library")
@@ -132,5 +133,3 @@ class MIHCGalaxyLibrary(MIHCBase):
     elif len(_rs) != 1:
       self.err("files found matching name > 1")
     return _rs[0]
-
-    
