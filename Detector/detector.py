@@ -11,10 +11,10 @@ class Detector(MIHCBase):
   # add validation classes here... see MIHCDataset/mihcdatatypes.py
   DATA_CLASSES = [ MIHCFullRun ]
   
-  def __init__(self, location, print=False):
+  def __init__(self, location,):
     # _find_mihc_data returns a dict of MIHCData objects:
     #   K: V == source directory: MIHCDataset
-    self._data = self._find_mihc_data(self.ROOT)
+    self._data = self._find_mihc_data(location)
 
   def _is_mihc_folder(self, location):
     """Checks if location is an MIHCDataset, returns data processor object if so"""
