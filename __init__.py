@@ -11,8 +11,6 @@ def run_mihc(location=None, key=None, address=None, port=None):
   address:   IP address of Galaxy server
   port:      Galaxy port
 
-  Notes:
-  - you can use 
   """
   config_file_name = "galaxy_settings.yml"
   config_to_args_mapping = {
@@ -56,7 +54,7 @@ def run_mihc(location=None, key=None, address=None, port=None):
         config_to_args_mapping[k] = "80"
       elif isinstance(val, int):
         val = str(val)
-    elif if not val:
+    elif not val:
       raise Exception("Error: {} not defined".format(val))
 
   # arguments settled on, running MIHC scripts

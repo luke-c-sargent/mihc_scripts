@@ -119,6 +119,7 @@ class MIHCGalaxy(MIHCBase):
         }
 
       # invoke workflow and collect results
+      print("Invoking workflow: \n\t{}\nOn History {}".format(_wf, _hname))
       wf_return = self._wfc.invoke_workflow(_r["id"], inputs=_inputs, history_id=_h._data["id"])
       # get the start time
       wf_return["start_datetime"] = datetime.utcnow()
