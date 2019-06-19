@@ -1,4 +1,5 @@
 import yaml
+import sys
 
 from mihc_scripts.MIHCRunner.mihcrunner import MIHCRunner
 
@@ -21,7 +22,7 @@ def run_mihc(location=None, key=None, address=None, port=None):
   }
 
   # open config file...
-  with open(config_file_name, 'r') as stream:
+  with open("{}/".format(sys.path[0]) + config_file_name, 'r') as stream:
     try:
       config = yaml.safe_load(stream)
     except yaml.YAMLError as exc:
@@ -36,7 +37,7 @@ def run_mihc(location=None, key=None, address=None, port=None):
         val = stream[k]
       except KeyError:
         print("KeyError: {} not found in {}".format( k, config_file_name))
-    
+
   # check provided location exists
   if location:
     if not isdir(location):
@@ -45,7 +46,7 @@ def run_mihc(location=None, key=None, address=None, port=None):
   # otherwise set it to the calling directory
   else:
     location = getcwd()
-    
+
   # check final parameter values
   for k in config_to_args_mapping:
     val = config_to_args_mapping[k]
