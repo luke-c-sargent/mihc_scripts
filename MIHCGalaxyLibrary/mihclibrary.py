@@ -54,7 +54,7 @@ class MIHCGalaxyLibrary(MIHCBase):
         continue
       _r.append(_)
     if len(_r) > 1:
-      self.err("there should be exactly one repo named {}.... {} found.".format(LIBRARY_NAME, len(_r)))
+      self.err("there should be exactly one repo named {}.... {} found.".format(self.name, len(_r)))
     elif len(_r) == 0:
       return None
     else:
