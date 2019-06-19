@@ -1,5 +1,5 @@
 import yaml
-import sys
+import os
 
 from mihc_scripts.MIHCRunner.mihcrunner import MIHCRunner
 
@@ -22,7 +22,7 @@ def run_mihc(location=None, key=None, address=None, port=None):
   }
 
   # open config file...
-  with open("{}/".format(sys.path[0]) + config_file_name, 'r') as stream:
+  with open("{}/".format('/'.join(os.path.realpath(__file__).split('/')[:-1])) + config_file_name, 'r') as stream:
     try:
       config = yaml.safe_load(stream)
     except yaml.YAMLError as exc:
