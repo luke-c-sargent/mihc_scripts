@@ -40,7 +40,7 @@ def run_mihc(location=None, key=None, address=None, port=None):
 
   # check provided location exists
   if location:
-    if not isdir(location):
+    if not os.path.isdir(location):
        self.err("'{}' is not a valid directory, setting `location` to current working directory".format(location))
 
   # otherwise set it to the calling directory
