@@ -29,14 +29,15 @@ class MIHCGalaxy(MIHCBase):
     invoked_workflows = self.process_samples(samples)
     self.monitor_workflows(invoked_workflows)
 
-  def download_dataset(self, dataset_id, file_path, subdir="Processed"):
+  def download_dataset(self, dataset_id, file_path, name, subdir="Processed"):
     # ensure directory exists or create it
-    final_path = file_path + "/" + subdir
-    print("Path to place downloaded file: {}".format(final_path))
-    if not isdir(final_path):
-      mkdir(final_path)
+    intermediate_path = file_path + "/" + subdir
+    print("Path to place downloaded file: {}".format(intermediate_path))
+    if not isdir(intermediate_path):
+      mkdir(intermediate_path)
+    final_path = intermediate_path + "/{}".format(name)
     # call API
-    self._dataset_client.download_dataset(dataset_id, final_path)
+    self._dataset_client.download_dataset(dataset_id, final_path, use_default_filename=False)
 
   def process_samples(self, samples):
     """Takes collected samples & workflows, adds them to a history & executes
@@ -178,5 +179,5 @@ class MIHCGalaxy(MIHCBase):
       # for each ROI...
       for _name in _pd_item:
         item = _pd_item[_name]
-        print("Downloading dataset {} into {}".format(item["dataset_id"], item["file_path"]))
+        print("Downloading dataset {} into {}".format(item["dataset_id"], item["file_path"], _name))
         self.download_dataset( item["dataset_id"], item["file_path"])
