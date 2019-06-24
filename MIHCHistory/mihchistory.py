@@ -38,6 +38,9 @@ class MIHCHistory(MIHCBase):
   def get_id(self):
     return self._data["id"]
 
+  def get_status(self):
+    return self._hist.get_status(self._data["id"])
+
   def get_current_info(self):
     return self._hist.get_histories(history_id = self._data["id"])
 

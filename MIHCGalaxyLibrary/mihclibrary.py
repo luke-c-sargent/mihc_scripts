@@ -50,10 +50,12 @@ class MIHCGalaxyLibrary(MIHCBase):
     _temp_r = self._lib.get_libraries(name=self.name)
     _r = []
     for _ in _temp_r:
-      if (_['deleted'] == "true"):
+      if (_['deleted']):
         continue
       _r.append(_)
     if len(_r) > 1:
+      for __r in _r:
+        print(__r)
       self.err("there should be exactly one repo named {}.... {} found.".format(self.name, len(_r)))
     elif len(_r) == 0:
       return None
@@ -116,7 +118,7 @@ class MIHCGalaxyLibrary(MIHCBase):
         else:
           final_string += "{}\n".format(_a)
       return final_string[:-1]
-    
+
     # add files to created directory
     _r = self._upload_file_to_dir( _unify_paths(_files), _folder_info['id'] )
     dataset.in_library = True
@@ -128,7 +130,7 @@ class MIHCGalaxyLibrary(MIHCBase):
       if _f["type"] == "file" and _f["name"] == "/{}/{}".format(containing_folder, filename):
         _rs.append(_f["id"])
     if not _rs:
-      self.err("/{}/{} file not found in library".format(containing_folder, filename))  
+      self.err("/{}/{} file not found in library".format(containing_folder, filename))
       return {}
     elif len(_rs) != 1:
       self.err("files found matching name > 1")
