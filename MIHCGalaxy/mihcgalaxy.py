@@ -1,10 +1,11 @@
 import argparse
 import json
 import time
+import tarfile
 
 from datetime import datetime
 from os.path import isfile, isdir
-from os import mkdir
+from os import mkdir, remove
 
 from bioblend.galaxy import GalaxyInstance, workflows, datasets
 
@@ -31,13 +32,22 @@ class MIHCGalaxy(MIHCBase):
 
   def download_dataset(self, dataset_id, file_path, name, subdir="Processed"):
     # ensure directory exists or create it
-    intermediate_path = file_path + "/" + subdir
-    print("Path to place downloaded file: {}".format(intermediate_path))
-    if not isdir(intermediate_path):
-      mkdir(intermediate_path)
-    final_path = intermediate_path + "/{}".format(name)
+    final_path = file_path + "/" + subdir
+    tempdir = "/tmp/mihc_temp/"
+    tempfile = "{}{}".format(tempdir, name)
+    print("Path to place downloaded file: {}".format(final_path))
+    if not isdir(final_path):
+      mkdir(final_path)
+    if not isdir(tempdir):
+      mkdir(final_path)
     # call API
-    self._dataset_client.download_dataset(dataset_id, final_path, use_default_filename=False)
+    #self._dataset_client.download_dataset(dataset_id, final_path, use_default_filename=False)
+    self._dataset_client.download_dataset(dataset_id, tempfile, use_default_filename=False)
+    # untar temp
+    tar_file = tarfile.open(tempfile, "r:gz")
+    tar_file.extractall(path=final_path)
+    # delete temp
+    remove(tempfile)
 
   def process_samples(self, samples):
     """Takes collected samples & workflows, adds them to a history & executes
