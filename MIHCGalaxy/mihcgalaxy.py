@@ -39,7 +39,7 @@ class MIHCGalaxy(MIHCBase):
     if not isdir(final_path):
       mkdir(final_path)
     if not isdir(tempdir):
-      mkdir(final_path)
+      mkdir(tempdir)
     # call API
     #self._dataset_client.download_dataset(dataset_id, final_path, use_default_filename=False)
     self._dataset_client.download_dataset(dataset_id, tempfile, use_default_filename=False)
