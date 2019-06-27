@@ -163,16 +163,17 @@ class MIHCGalaxy(MIHCBase):
       potential_downloads[invoked_wf["history_id"]] = {}
     stop_processing = False
     while(not stop_processing):
+      print(".", end="")
       stop_processing = True
       # for every invoked workflow,
       for invoked_wf in invoked_workflows:
         _history_id = invoked_wf["history_id"]
-        print("\nChecking invoked workflow id {} in history {} on data:\n\t-- {}".format(invoked_wf["workflow_id"], invoked_wf["history_id"], invoked_wf["directory"]))
+        #print("\nChecking invoked workflow id {} in history {} on data:\n\t-- {}".format(invoked_wf["workflow_id"], invoked_wf["history_id"], invoked_wf["directory"]))
         contents = invoked_wf["history_object"].get_history_contents()
         desired_contents = {}
         for _content in contents:
           if "extension" in _content and _content["extension"] == "zip" and "ROI" in _content["name"]:
-            print("\t~found {}".format(_content["name"]))
+            #print("\t~found {}".format(_content["name"]))
             desired_contents[_content["name"]] = {"dataset_id": _content["id"], "file_path": invoked_wf["directory"]}
         # if we've already established this set,
         if not desired_contents or desired_contents != potential_downloads[_history_id]:
@@ -182,7 +183,7 @@ class MIHCGalaxy(MIHCBase):
       time.sleep(20)
       #if stop_processing:
         #print("dc: {}\npd[hid]: {}".format(desired_contents, potential_downloads[_history_id]))
-
+    print("")
     # for each history item...
     for _hid in potential_downloads:
       _pd_item  = potential_downloads[_hid]
