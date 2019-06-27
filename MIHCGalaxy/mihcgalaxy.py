@@ -190,4 +190,4 @@ class MIHCGalaxy(MIHCBase):
       for _name in _pd_item:
         item = _pd_item[_name]
         print("Downloading dataset {} into {}".format(item["dataset_id"], item["file_path"], _name))
-        self.download_dataset( item["dataset_id"], item["file_path"])
+        self.download_dataset( item["dataset_id"], item["file_path"], _name)
