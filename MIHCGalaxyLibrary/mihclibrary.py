@@ -13,6 +13,7 @@ class MIHCGalaxyLibrary(MIHCBase):
   DEFAULT_LIBRARY_DESCRIPTION = "the data library for mIHC sample data"
 
   def __init__(self, galaxy_instance, lib_name=None, lib_description=None):
+    # configure defaults
     if not lib_name:
       self.name = MIHCGalaxyLibrary.DEFAULT_LIBRARY_NAME
     else:
@@ -21,24 +22,16 @@ class MIHCGalaxyLibrary(MIHCBase):
       self.description = MIHCGalaxyLibrary.DEFAULT_LIBRARY_DESCRIPTION
     else:
       self.description = lib_description
+
     # initialize bioblend Library object
     self._lib = libraries.LibraryClient(galaxy_instance)
+
     # get library info, create if needed, error if multiple libraries found
     _lib = self._get_lib()
     if not _lib:
       _lib = self._create_lib()
     self.__dict__.update(_lib)
     self._update_contents()
-
-  def __repr__(self):
-    _s = "<MIHCGalaxyLibrary>\n"
-    for _k in MIHCGalaxyLibrary.LIBRARY_KEYS:
-      _s += "  '{}': '{}'\n".format(_k, self.__dict__[_k])
-    if self.library_contents:
-      _s += "  'library_contents':\n"
-      for _k in self.library_contents:
-        _s += "  - '{}'\n".format(_k)
-    return _s + "</MIHCGalaxyLibrary>"
 
   # content keys: url, id, name, type
   def _update_contents(self):
@@ -54,8 +47,6 @@ class MIHCGalaxyLibrary(MIHCBase):
         continue
       _r.append(_)
     if len(_r) > 1:
-      for __r in _r:
-        print(__r)
       self.err("there should be exactly one repo named {}.... {} found.".format(self.name, len(_r)))
     elif len(_r) == 0:
       return None
@@ -107,8 +98,8 @@ class MIHCGalaxyLibrary(MIHCBase):
     end_folder = dataset._data["source_dir"].split('/')[-1]
     # create library folder
     _folder_info = self._create_lib_folder(end_folder)
-    # 'paths' string creation helper fn
 
+    # 'paths' string creation helper fn
     def _unify_paths(*args):
       final_string = ""
       for _a in args:
@@ -124,14 +115,25 @@ class MIHCGalaxyLibrary(MIHCBase):
     dataset.in_library = True
     return _r
 
-  def get_file_id(self, filename, containing_folder):
+  def get_file_id(self, filename):
     _rs = []
     for _f in self.library_contents:
-      if _f["type"] == "file" and _f["name"] == "/{}/{}".format(containing_folder, filename):
+      if _f["type"] == "file" and filename in _f["name"]:
         _rs.append(_f["id"])
     if not _rs:
-      self.err("/{}/{} file not found in library".format(containing_folder, filename))
+      self.err("{} file not found in library".format(filename))
       return {}
     elif len(_rs) != 1:
       self.err("files found matching name > 1")
     return _rs[0]
+
+  # for pretty printing, when necessary
+  def __repr__(self):
+    _s = "<MIHCGalaxyLibrary>\n"
+    for _k in MIHCGalaxyLibrary.LIBRARY_KEYS:
+      _s += "  '{}': '{}'\n".format(_k, self.__dict__[_k])
+    if self.library_contents:
+      _s += "  'library_contents':\n"
+      for _k in self.library_contents:
+        _s += "  - '{}'\n".format(_k)
+    return _s + "</MIHCGalaxyLibrary>"

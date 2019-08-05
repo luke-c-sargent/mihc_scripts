@@ -73,14 +73,14 @@ class MIHCHistory(MIHCBase):
     _fname, _srcpath = MIHCHistory._extract_file_and_folder(data)
     if folder:
       _srcpath = folder
-    _file_id = library.get_file_id(_fname, _srcpath)
+    _file_id = library.get_file_id(_fname)
     return self._hist.upload_dataset_from_library(self._data["id"], _file_id)
 
   def _add_dataset_collection(self, data, library, name="Image Set"):
     _e_ids = []
     for _datum in data:
       _fname, _srcpath = MIHCHistory._extract_file_and_folder(_datum)
-      _file_id = library.get_file_id(_fname, _srcpath)
+      _file_id = library.get_file_id(_fname)
       _e = {
         "id": _file_id,
         "name": _fname,

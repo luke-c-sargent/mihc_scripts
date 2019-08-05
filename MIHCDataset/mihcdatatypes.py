@@ -37,7 +37,8 @@ class BaseMIHCData(MIHCBase):
         self.err("Require exactly 1 cppipe file; found {} in dir {}".format(len(cppipes), _parent_dir))
       else:
         self._data["CP_PIPELINE"] = cppipes[0]
-      #self._data["parent_workflow"] = self._get_workflow()
+
+      #this component calls the subclass-specific check_data()
       self._data.update(self.check_data(location))
     elif (not location):
       self.err("Please provide location")
@@ -198,4 +199,10 @@ class MIHCFullRun(BaseMIHCData):
       if not _result[_k]:
         MIHCBase.warn("Missing required input: {}".format(_k))
         return {}
+    # check for existent registered region files
+    if "{}/Registered_Regions".format(location) in _dirs:
+      _subdirs = MIHCBase._list_dir("{}/Registered_Regions".format(location))[1]
+      for _subdir in _subdirs:
+        _rr_files = [ _file for _file in MIHCBase._list_dir(_subdir)[0] if _file[-3:] == "tif" ]
+        _result["MARKER_COL"].extend(_rr_files)
     return _result
