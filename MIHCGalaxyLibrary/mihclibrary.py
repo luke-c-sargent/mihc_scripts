@@ -124,7 +124,7 @@ class MIHCGalaxyLibrary(MIHCBase):
       self.err("{} file not found in library".format(filename))
       return {}
     elif len(_rs) != 1:
-      self.err("files found matching name > 1")
+      self.err("files found matching name {} > 1".format(filename))
     return _rs[0]
 
   # for pretty printing, when necessary
