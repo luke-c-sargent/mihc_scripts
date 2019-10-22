@@ -81,7 +81,7 @@ class MIHCHistory(MIHCBase):
     for _datum in data:
       _fname, _srcpath = MIHCHistory._extract_file_and_folder(_datum)
       _fpath = "/{}/{}".format(parent_folder, _fname)
-      _file_id = library.get_file_id(_path)
+      _file_id = library.get_file_id(_fpath)
       _e = {
         "id": _file_id,
         "name": _fname,
