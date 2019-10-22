@@ -27,10 +27,10 @@ class MIHCGalaxyLibrary(MIHCBase):
     self._lib = libraries.LibraryClient(galaxy_instance)
 
     # get library info, create if needed, error if multiple libraries found
-    _lib = self._get_lib()
-    if not _lib:
-      _lib = self._create_lib()
-    self.__dict__.update(_lib)
+    _library = self._get_lib()
+    if not _library:
+      _library = self._create_lib()
+    self.__dict__.update(_library)
     self._update_contents()
 
   # content keys: url, id, name, type
